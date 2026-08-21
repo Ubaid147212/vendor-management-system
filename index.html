@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vendor Management System - Login</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-container {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo h1 {
+      font-size: 24px;
+      color: #0f3460;
+      font-weight: 700;
+    }
+
+    .logo p {
+      color: #888;
+      font-size: 13px;
+      margin-top: 5px;
+    }
+
+    .logo .icon {
+      font-size: 50px;
+      margin-bottom: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+      outline: none;
+    }
+
+    .form-group input:focus {
+      border-color: #0f3460;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #0f3460, #e94560);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.3s;
+      margin-top: 10px;
+    }
+
+    .login-btn:hover {
+      opacity: 0.9;
+    }
+
+    .login-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .error-msg {
+      background: #ffe0e0;
+      color: #c0392b;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-bottom: 15px;
+      display: none;
+      text-align: center;
+    }
+
+    .loading-msg {
+      background: #e0f0ff;
+      color: #0f3460;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-bottom: 15px;
+      display: none;
+      text-align: center;
+    }
+
+    .footer-text {
+      text-align: center;
+      margin-top: 25px;
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    .role-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .badge {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .badge-admin { background: #ffeaa7; color: #d35400; }
+    .badge-manager { background: #dfe6e9; color: #2d3436; }
+    .badge-vendor { background: #d4efdf; color: #1e8449; }
+    .badge-worker { background: #d6eaf8; color: #1a5276; }
+    .badge-delivery { background: #f9ebea; color: #922b21; }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+
+    <div class="logo">
+      <div class="icon">🏪</div>
+      <h1>Vendor Management</h1>
+      <p>Daraz Multi-Vendor System — Vehari</p>
+    </div>
+
+    <div class="error-msg" id="errorMsg"></div>
+    <div class="loading-msg" id="loadingMsg">⏳ Logging in, please wait...</div>
+
+    <div class="form-group">
+      <label>Email Address</label>
+      <input 
+        type="email" 
+        id="emailInput" 
+        placeholder="Enter your email"
+        autocomplete="email"
+      />
+    </div>
+
+    <div class="form-group">
+      <label>Password</label>
+      <input 
+        type="password" 
+        id="passwordInput" 
+        placeholder="Enter your password"
+        autocomplete="current-password"
+      />
+    </div>
+
+    <button class="login-btn" id="loginBtn" onclick="handleLogin()">
+      Login to Dashboard
+    </button>
+
+    <div class="role-badges">
+      <span class="badge badge-admin">👑 Admin</span>
+      <span class="badge badge-manager">🔍 Manager</span>
+      <span class="badge badge-vendor">🏬 Vendor</span>
+      <span class="badge badge-worker">🎨 Worker</span>
+      <span class="badge badge-delivery">🚴 Delivery</span>
+    </div>
+
+    <div class="footer-text">
+      One login for all roles — system detects your role automatically
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+
+    // ==============================
+    // YOUR SUPABASE DETAILS GO HERE
+    // ==============================
+    const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+    const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+    // ==============================
+
+    const { createClient } = supabase;
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    async function handleLogin() {
+      const email = document.getElementById('emailInput').value.trim();
+      const password = document.getElementById('passwordInput').value.trim();
+      const errorMsg = document.getElementById('errorMsg');
+      const loadingMsg = document.getElementById('loadingMsg');
+      const loginBtn = document.getElementById('loginBtn');
+
+      // Hide previous messages
+      errorMsg.style.display = 'none';
+      loadingMsg.style.display = 'none';
+
+      // Basic validation
+      if (!email || !password) {
+        errorMsg.textContent = '⚠️ Please enter both email and password.';
+        errorMsg.style.display = 'block';
+        return;
+      }
+
+      // Show loading
+      loadingMsg.style.display = 'block';
+      loginBtn.disabled = true;
+      loginBtn.textContent = 'Logging in...';
+
+      try {
+        // Step 1: Login with Supabase Auth
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
+
+        if (error) {
+          throw new Error('Invalid email or password. Please try again.');
+        }
+
+        // Step 2: Get user role from profiles table
+        const { data: profile, error: profileError } = await supabaseClient
+          .from('profiles')
+          .select('role, full_name, is_online')
+          .eq('id', data.user.id)
+          .single();
+
+        if (profileError || !profile) {
+          throw new Error('Account setup incomplete. Please contact Admin.');
+        }
+
+        // Step 3: Check if worker/delivery is marked offline
+        if (profile.is_online === false) {
+          throw new Error('Your account is marked Offline today. Contact Admin or Manager.');
+        }
+
+        // Step 4: Redirect based on role
+        loadingMsg.textContent = `✅ Welcome ${profile.full_name}! Redirecting...`;
+
+        setTimeout(() => {
+          switch(profile.role) {
+            case 'admin':
+              window.location.href = 'admin/dashboard.html';
+              break;
+            case 'manager':
+              window.location.href = 'manager/dashboard.html';
+              break;
+            case 'vendor':
+              window.location.href = 'vendor/dashboard.html';
+              break;
+            case 'worker':
+              window.location.href = 'worker/dashboard.html';
+              break;
+            case 'delivery':
+              window.location.href = 'delivery/dashboard.html';
+              break;
+            default:
+              throw new Error('Unknown role. Contact Admin.');
+          }
+        }, 1500);
+
+      } catch (err) {
+        loadingMsg.style.display = 'none';
+        errorMsg.textContent = '❌ ' + err.message;
+        errorMsg.style.display = 'block';
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Login to Dashboard';
+      }
+    }
+
+    // Allow pressing Enter to login
+    document.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') handleLogin();
+    });
+
+  </script>
+
+</body>
+</html>
