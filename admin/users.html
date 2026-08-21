@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Users — VendorPro</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+    body {
+      background: #0d0d0f;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 260px;
+      background: #121214;
+      border-right: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      flex-direction: column;
+      padding: 24px 0;
+      position: fixed;
+      height: 100vh;
+    }
+
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 24px;
+      margin-bottom: 32px;
+    }
+
+    .logo-mark {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #ff7a1a, #ff9d4d);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-mark svg { width: 18px; height: 18px; fill: white; }
+    .logo-text { font-size: 16px; font-weight: 700; }
+
+    .nav-section { padding: 0 16px; margin-bottom: 24px; }
+    .nav-label {
+      font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.25);
+      text-transform: uppercase; letter-spacing: 1px; padding: 0 12px; margin-bottom: 10px;
+    }
+
+    .nav-item {
+      display: flex; align-items: center; gap: 12px; padding: 11px 12px;
+      border-radius: 10px; color: rgba(255,255,255,0.55); text-decoration: none;
+      font-size: 13.5px; font-weight: 500; margin-bottom: 2px; cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .nav-item svg { width: 17px; height: 17px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .nav-item:hover { background: rgba(255,255,255,0.04); color: white; }
+    .nav-item.active { background: rgba(255,122,26,0.1); color: #ff9d4d; }
+
+    .sidebar-footer {
+      margin-top: auto; padding: 16px 24px 0; border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .user-box { display: flex; align-items: center; gap: 10px; padding: 10px 0; }
+    .user-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, #ff7a1a, #ff9d4d);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700;
+    }
+
+    .user-info h4 { font-size: 13px; font-weight: 600; }
+    .user-info p { font-size: 11px; color: rgba(255,255,255,0.35); }
+
+    .logout-btn {
+      width: 100%; padding: 9px; background: rgba(255,70,70,0.08);
+      border: 1px solid rgba(255,70,70,0.2); color: #ff8080; border-radius: 8px;
+      font-size: 12.5px; font-weight: 600; cursor: pointer; margin-top: 10px;
+    }
+
+    .main { margin-left: 260px; flex: 1; padding: 32px 40px; }
+
+    .topbar {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;
+    }
+
+    .page-title h1 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+    .page-title p { font-size: 13px; color: rgba(255,255,255,0.35); }
+
+    .add-btn {
+      padding: 12px 20px; background: #ff7a1a; color: white; border: none;
+      border-radius: 10px; font-size: 13.5px; font-weight: 600; cursor: pointer;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .add-btn:hover { background: #ff8c3d; }
+    .add-btn svg { width: 16px; height: 16px; stroke: white; fill: none; stroke-width: 2; }
+
+    /* Tabs */
+    .tabs {
+      display: flex; gap: 8px; margin-bottom: 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 0;
+    }
+
+    .tab {
+      padding: 10px 18px; font-size: 13px; font-weight: 600;
+      color: rgba(255,255,255,0.4); cursor: pointer; border-bottom: 2px solid transparent;
+    }
+
+    .tab.active { color: #ff9d4d; border-bottom-color: #ff7a1a; }
+
+    /* Table */
+    .table-container {
+      background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+      border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; overflow: hidden;
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+
+    th {
+      text-align: left; padding: 14px 20px; font-size: 11px; font-weight: 600;
+      color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.5px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    td {
+      padding: 16px 20px; font-size: 13.5px; color: rgba(255,255,255,0.8);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+
+    .badge {
+      padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;
+    }
+
+    .badge-active { background: rgba(0,220,130,0.1); color: #33dd99; }
+    .badge-offline { background: rgba(255,70,70,0.1); color: #ff6666; }
+
+    .action-btn {
+      padding: 6px 12px; border-radius: 6px; font-size: 11.5px; font-weight: 600;
+      cursor: pointer; border: 1px solid rgba(255,255,255,0.1); background: transparent;
+      color: rgba(255,255,255,0.6); margin-right: 6px;
+    }
+
+    .action-btn:hover { background: rgba(255,255,255,0.05); color: white; }
+
+    .empty-row td {
+      text-align: center; padding: 50px 20px; color: rgba(255,255,255,0.25);
+    }
+
+    /* Modal */
+    .modal-overlay {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7); z-index: 100; align-items: center; justify-content: center;
+    }
+
+    .modal-overlay.show { display: flex; }
+
+    .modal {
+      background: #16161a; border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px; padding: 32px; width: 440px; max-width: 90vw;
+    }
+
+    .modal-header {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;
+    }
+
+    .modal-header h3 { font-size: 18px; font-weight: 700; }
+
+    .close-btn {
+      width: 28px; height: 28px; border-radius: 8px; background: rgba(255,255,255,0.05);
+      border: none; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 16px;
+    }
+
+    .form-group { margin-bottom: 16px; }
+
+    .form-group label {
+      display: block; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.5);
+      margin-bottom: 6px;
+    }
+
+    .form-group input, .form-group select {
+      width: 100%; padding: 11px 14px; background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; font-size: 13.5px;
+    }
+
+    .form-group input:focus, .form-group select:focus {
+      outline: none; border-color: rgba(255,122,26,0.5);
+    }
+
+    .commission-group { display: none; }
+    .commission-group.show { display: block; }
+
+    .submit-btn {
+      width: 100%; padding: 13px; background: #ff7a1a; color: white; border: none;
+      border-radius: 10px; font-weight: 600; font-size: 14px; cursor: pointer; margin-top: 8px;
+    }
+
+    .submit-btn:hover { background: #ff8c3d; }
+    .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .msg-box {
+      padding: 10px 14px; border-radius: 8px; font-size: 12.5px; margin-bottom: 14px; display: none;
+    }
+
+    .msg-error { background: rgba(255,70,70,0.1); border: 1px solid rgba(255,70,70,0.2); color: #ff8080; }
+    .msg-success { background: rgba(0,220,130,0.1); border: 1px solid rgba(0,220,130,0.2); color: #33dd99; }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      </div>
+      <div class="logo-text">VendorPro</div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Overview</div>
+      <a class="nav-item" href="dashboard.html">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Management</div>
+      <a class="nav-item active" href="users.html">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Users
+      </a>
+      <a class="nav-item" href="products.html">
+        <svg viewBox="0 0 24 24"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/></svg>
+        Products
+      </a>
+      <a class="nav-item" href="orders.html">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/></svg>
+        Orders & Commission
+      </a>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="user-box">
+        <div class="user-avatar" id="userAvatar">A</div>
+        <div class="user-info">
+          <h4 id="userName">Loading...</h4>
+          <p>Administrator</p>
+        </div>
+      </div>
+      <button class="logout-btn" onclick="handleLogout()">Sign Out</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="page-title">
+        <h1>Manage Users</h1>
+        <p>Add and manage vendors, workers, delivery boys and managers</p>
+      </div>
+      <button class="add-btn" onclick="openModal()">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add New User
+      </button>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" data-role="all" onclick="filterRole('all')">All Users</div>
+      <div class="tab" data-role="vendor" onclick="filterRole('vendor')">Vendors</div>
+      <div class="tab" data-role="worker" onclick="filterRole('worker')">Workers</div>
+      <div class="tab" data-role="delivery" onclick="filterRole('delivery')">Delivery</div>
+      <div class="tab" data-role="manager" onclick="filterRole('manager')">Managers</div>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Role</th>
+            <th>Commission</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="usersTableBody">
+          <tr class="empty-row"><td colspan="6">Loading users...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ADD USER MODAL -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Add New User</h3>
+        <button class="close-btn" onclick="closeModal()">✕</button>
+      </div>
+
+      <div class="msg-box msg-error" id="modalError"></div>
+      <div class="msg-box msg-success" id="modalSuccess"></div>
+
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="newFullName" placeholder="e.g. Ali Hassan">
+      </div>
+
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="text" id="newPhone" placeholder="03XX-XXXXXXX">
+      </div>
+
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="newEmail" placeholder="user@example.com">
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input type="text" id="newPassword" placeholder="Set a password for this user">
+      </div>
+
+      <div class="form-group">
+        <label>Role</label>
+        <select id="newRole" onchange="toggleCommissionField()">
+          <option value="">Select Role</option>
+          <option value="vendor">Vendor</option>
+          <option value="worker">Worker</option>
+          <option value="delivery">Delivery Boy</option>
+          <option value="manager">Manager</option>
+        </select>
+      </div>
+
+      <div class="form-group commission-group" id="commissionGroup">
+        <label>Commission Percentage (%)</label>
+        <input type="number" id="newCommission" placeholder="e.g. 20" min="0" max="100">
+      </div>
+
+      <button class="submit-btn" id="submitBtn" onclick="handleCreateUser()">Create Account</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = 'https://faqysbhbqwpndinyxzrh.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZhcXlzYmhicXdwbmRpbnl4enJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODczMjAzMzQsImV4cCI6MjEwMjg5NjMzNH0.mMoxhImEeg7BVDVgPogClkelxmAqlhi51BksrjAso7k';
+
+    const { createClient } = supabase;
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    let allUsers = [];
+    let currentFilter = 'all';
+
+    async function checkAuth() {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (!session) { window.location.href = '../index.html'; return; }
+
+      const { data: profile } = await supabaseClient
+        .from('profiles').select('*').eq('id', session.user.id).single();
+
+      if (!profile || profile.role !== 'admin') {
+        alert('Access denied.');
+        window.location.href = '../index.html';
+        return;
+      }
+
+      document.getElementById('userName').textContent = profile.full_name;
+      document.getElementById('userAvatar').textContent = profile.full_name.charAt(0).toUpperCase();
+
+      loadUsers();
+    }
+
+    async function loadUsers() {
+      const { data, error } = await supabaseClient
+        .from('profiles')
+        .select('*')
+        .neq('role', 'admin')
+        .order('created_at', { ascending: false });
+
+      allUsers = data || [];
+      renderUsers();
+    }
+
+    function renderUsers() {
+      const tbody = document.getElementById('usersTableBody');
+      const filtered = currentFilter === 'all' ? allUsers : allUsers.filter(u => u.role === currentFilter);
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr class="empty-row"><td colspan="6">No users found</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(user => `
+        <tr>
+          <td>${user.full_name}</td>
+          <td>${user.phone || '—'}</td>
+          <td style="text-transform: capitalize;">${user.role}</td>
+          <td>${user.role === 'vendor' ? user.commission_percent + '%' : '—'}</td>
+          <td><span class="badge ${user.is_online ? 'badge-active' : 'badge-offline'}">${user.is_online ? 'Active' : 'Offline'}</span></td>
+          <td>
+            <button class="action-btn" onclick="toggleStatus('${user.id}', ${user.is_online})">
+              ${user.is_online ? 'Set Offline' : 'Set Online'}
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function filterRole(role) {
+      currentFilter = role;
+      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+      document.querySelector(`[data-role="${role}"]`).classList.add('active');
+      renderUsers();
+    }
+
+    async function toggleStatus(userId, currentStatus) {
+      await supabaseClient
+        .from('profiles')
+        .update({ is_online: !currentStatus })
+        .eq('id', userId);
+      loadUsers();
+    }
+
+    function openModal() {
+      document.getElementById('modalOverlay').classList.add('show');
+    }
+
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('show');
+      document.getElementById('newFullName').value = '';
+      document.getElementById('newPhone').value = '';
+      document.getElementById('newEmail').value = '';
+      document.getElementById('newPassword').value = '';
+      document.getElementById('newRole').value = '';
+      document.getElementById('newCommission').value = '';
+      document.getElementById('modalError').style.display = 'none';
+      document.getElementById('modalSuccess').style.display = 'none';
+    }
+
+    function toggleCommissionField() {
+      const role = document.getElementById('newRole').value;
+      const commissionGroup = document.getElementById('commissionGroup');
+      if (role === 'vendor') {
+        commissionGroup.classList.add('show');
+      } else {
+        commissionGroup.classList.remove('show');
+      }
+    }
+
+    async function handleCreateUser() {
+      const full_name = document.getElementById('newFullName').value.trim();
+      const phone = document.getElementById('newPhone').value.trim();
+      const email = document.getElementById('newEmail').value.trim();
+      const password = document.getElementById('newPassword').value.trim();
+      const role = document.getElementById('newRole').value;
+      const commission_percent = document.getElementById('newCommission').value || 0;
+
+      const errorBox = document.getElementById('modalError');
+      const successBox = document.getElementById('modalSuccess');
+      const submitBtn = document.getElementById('submitBtn');
+
+      errorBox.style.display = 'none';
+      successBox.style.display = 'none';
+
+      if (!full_name || !email || !password || !role) {
+        errorBox.textContent = 'Please fill all required fields.';
+        errorBox.style.display = 'block';
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Creating...';
+
+      try {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+
+        const response = await fetch(`${SUPABASE_URL}/functions/v1/create-user`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session.access_token}`
+          },
+          body: JSON.stringify({
+            email, password, full_name, phone, role,
+            commission_percent: parseFloat(commission_percent)
+          })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.error || 'Failed to create user');
+        }
+
+        successBox.textContent = result.message;
+        successBox.style.display = 'block';
+
+        setTimeout(() => {
+          closeModal();
+          loadUsers();
+        }, 1500);
+
+      } catch (err) {
+        errorBox.textContent = err.message;
+        errorBox.style.display = 'block';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Create Account';
+      }
+    }
+
+    async function handleLogout() {
+      await supabaseClient.auth.signOut();
+      window.location.href = '../index.html';
+    }
+
+    checkAuth();
+  </script>
+</body>
+</html>
