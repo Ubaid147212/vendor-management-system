@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Worker Dashboard — VendorPro</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+    body { background: #f5f5f7; color: #1a1a1a; min-height: 100vh; display: flex; }
+
+    .sidebar {
+      width: 260px; background: white; border-right: 1px solid #e8e8e8;
+      display: flex; flex-direction: column; padding: 24px 0; position: fixed; height: 100vh;
+      box-shadow: 2px 0 20px rgba(0,0,0,0.06);
+    }
+    .sidebar-logo { display: flex; align-items: center; gap: 12px; padding: 0 24px; margin-bottom: 32px; }
+    .logo-mark {
+      width: 38px; height: 38px; background: linear-gradient(135deg, #ff7a1a, #ff9d4d);
+      border-radius: 10px; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 12px rgba(255,122,26,0.3);
+    }
+    .logo-mark svg { width: 18px; height: 18px; fill: white; }
+    .logo-text { font-size: 16px; font-weight: 700; color: #1a1a1a; }
+    .nav-section { padding: 0 16px; margin-bottom: 20px; }
+    .nav-label { font-size: 11px; font-weight: 600; color: #aaa; text-transform: uppercase; letter-spacing: 1px; padding: 0 12px; margin-bottom: 8px; }
+    .nav-item {
+      display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 10px;
+      color: #666; text-decoration: none; font-size: 13.5px; font-weight: 500;
+      margin-bottom: 2px; cursor: pointer; transition: all 0.2s ease;
+    }
+    .nav-item svg { width: 17px; height: 17px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .nav-item:hover { background: #fff4ee; color: #ff7a1a; }
+    .nav-item.active { background: linear-gradient(135deg, rgba(255,122,26,0.12), rgba(255,157,77,0.08)); color: #ff7a1a; font-weight: 600; }
+    .sidebar-footer { margin-top: auto; padding: 16px 24px 0; border-top: 1px solid #f0f0f0; }
+    .user-box { display: flex; align-items: center; gap: 10px; padding: 10px 0; }
+    .user-avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: linear-gradient(135deg, #ff7a1a, #ff9d4d);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; color: white;
+    }
+    .user-info h4 { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+    .user-info p { font-size: 11px; color: #999; }
+    .logout-btn {
+      width: 100%; padding: 9px; background: #fff1f1; border: 1px solid #ffd0d0;
+      color: #e05555; border-radius: 8px; font-size: 12.5px; font-weight: 600;
+      cursor: pointer; margin-top: 10px;
+    }
+
+    .main { margin-left: 260px; flex: 1; padding: 32px 40px; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
+    .page-title h1 { font-size: 24px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px; }
+    .page-title p { font-size: 13px; color: #888; }
+
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+    .stat-card {
+      background: white; border-radius: 14px; padding: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06); border: 1px solid #f0f0f0;
+    }
+    .stat-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+    .stat-icon svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .icon-orange { background: rgba(255,122,26,0.1); color: #ff7a1a; }
+    .icon-green { background: rgba(0,200,120,0.1); color: #00c878; }
+    .icon-blue { background: rgba(0,120,255,0.1); color: #0078ff; }
+    .icon-red { background: rgba(255,70,70,0.1); color: #ff4646; }
+    .stat-value { font-size: 26px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px; }
+    .stat-label { font-size: 12.5px; color: #888; }
+
+    /* Task Cards */
+    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .section-header h3 { font-size: 16px; font-weight: 700; color: #1a1a1a; }
+
+    .tasks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-bottom: 28px; }
+
+    .task-card {
+      background: white; border-radius: 14px; overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06); border: 1px solid #f0f0f0;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .task-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+    .task-card.late { border-color: #ffcccc; box-shadow: 0 2px 12px rgba(255,70,70,0.1); }
+
+    .task-image {
+      width: 100%; height: 180px; object-fit: cover; background: #f5f5f5;
+      display: flex; align-items: center; justify-content: center; position: relative;
+    }
+    .task-image img { width: 100%; height: 100%; object-fit: cover; }
+    .task-image svg { width: 32px; height: 32px; stroke: #ddd; fill: none; stroke-width: 1.5; }
+
+    .late-badge {
+      position: absolute; top: 10px; left: 10px; background: #ff4444; color: white;
+      padding: 3px 10px; border-radius: 6px; font-size: 10px; font-weight: 700;
+    }
+
+    .task-info { padding: 16px; }
+    .task-title { font-size: 14px; font-weight: 700; color: #1a1a1a; margin-bottom: 6px; }
+    .task-meta { font-size: 12px; color: #aaa; margin-bottom: 12px; }
+    .task-meta span { color: #ff7a1a; font-weight: 600; }
+
+    .task-timer {
+      display: flex; align-items: center; gap: 6px; font-size: 12px;
+      color: #888; margin-bottom: 14px; padding: 8px 12px;
+      background: #f9f9f9; border-radius: 8px;
+    }
+    .task-timer svg { width: 14px; height: 14px; stroke: #aaa; fill: none; stroke-width: 2; }
+    .task-timer.late-timer { background: #fff0f0; color: #cc3333; }
+    .task-timer.late-timer svg { stroke: #cc3333; }
+
+    .task-actions { display: flex; gap: 8px; }
+
+    .download-btn {
+      flex: 1; padding: 10px; background: #f5f5f7; border: 1.5px solid #e8e8e8;
+      border-radius: 8px; font-size: 12.5px; font-weight: 600; color: #555;
+      cursor: pointer; text-align: center; text-decoration: none; display: flex;
+      align-items: center; justify-content: center; gap: 6px; transition: all 0.2s;
+    }
+    .download-btn:hover { background: #fff4ee; border-color: #ff7a1a; color: #ff7a1a; }
+    .download-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+    .upload-edit-btn {
+      flex: 1; padding: 10px; background: linear-gradient(135deg, #ff7a1a, #ff9d4d);
+      border: none; border-radius: 8px; font-size: 12.5px; font-weight: 600;
+      color: white; cursor: pointer; transition: all 0.2s;
+    }
+    .upload-edit-btn:hover { opacity: 0.9; }
+
+    /* History Table */
+    .history-section {
+      background: white; border-radius: 14px; padding: 22px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06); border: 1px solid #f0f0f0;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      text-align: left; padding: 12px 16px; font-size: 11px; font-weight: 700;
+      color: #aaa; text-transform: uppercase; border-bottom: 1.5px solid #f0f0f0;
+    }
+    td { padding: 14px 16px; font-size: 13.5px; color: #444; border-bottom: 1px solid #f8f8f8; }
+    tr:last-child td { border-bottom: none; }
+    .status-pill { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+    .pill-done { background: #e8faf2; color: #00a85a; }
+    .pill-pending { background: #fff8e1; color: #f59500; }
+    .empty-row td { text-align: center; padding: 40px; color: #bbb; }
+
+    /* Upload Modal */
+    .modal-overlay {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5); z-index: 100; align-items: center; justify-content: center;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal {
+      background: white; border-radius: 16px; padding: 28px; width: 420px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .modal-header h3 { font-size: 16px; font-weight: 700; color: #1a1a1a; }
+    .close-btn { width: 28px; height: 28px; border-radius: 8px; background: #f5f5f5; border: none; color: #888; cursor: pointer; font-size: 16px; }
+    .modal-product-name { font-size: 13px; color: #888; margin-bottom: 16px; padding: 10px 14px; background: #f9f9f9; border-radius: 8px; }
+
+    .upload-area {
+      border: 2px dashed #e0e0e0; border-radius: 10px; padding: 30px;
+      text-align: center; cursor: pointer; transition: all 0.2s; position: relative; margin-bottom: 16px;
+    }
+    .upload-area:hover { border-color: #ff7a1a; background: #fff9f5; }
+    .upload-area input { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+    .upload-area svg { width: 28px; height: 28px; stroke: #ccc; fill: none; stroke-width: 1.5; margin-bottom: 8px; }
+    .upload-area p { font-size: 13px; color: #aaa; }
+    .upload-area .hl { color: #ff7a1a; font-weight: 600; }
+    .edit-preview { width: 100%; max-height: 150px; object-fit: cover; border-radius: 8px; display: none; margin-top: 10px; }
+
+    .msg-box { padding: 10px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; margin-bottom: 12px; display: none; }
+    .msg-success { background: #f0fdf6; border: 1px solid #bbf0d6; color: #1a7a45; }
+    .msg-error { background: #fff0f0; border: 1px solid #ffd0d0; color: #cc3333; }
+
+    .submit-btn {
+      width: 100%; padding: 13px; background: linear-gradient(135deg, #ff7a1a, #ff9d4d);
+      color: white; border: none; border-radius: 10px; font-size: 14px;
+      font-weight: 700; cursor: pointer;
+    }
+    .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+      <div class="logo-text">VendorPro</div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">Menu</div>
+      <a class="nav-item active" onclick="showSection('tasks', this)">
+        <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        My Tasks
+      </a>
+      <a class="nav-item" onclick="showSection('history', this)">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        History
+      </a>
+    </div>
+    <div class="sidebar-footer">
+      <div class="user-box">
+        <div class="user-avatar" id="userAvatar">W</div>
+        <div class="user-info">
+          <h4 id="userName">Loading...</h4>
+          <p>Worker</p>
+        </div>
+      </div>
+      <button class="logout-btn" onclick="handleLogout()">Sign Out</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="page-title">
+        <h1 id="pageTitle">My Tasks</h1>
+        <p id="pageSubtitle">Products assigned to you for editing</p>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon icon-orange">
+          <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/></svg>
+        </div>
+        <div class="stat-value" id="stat-assigned">—</div>
+        <div class="stat-label">Assigned Tasks</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon icon-red">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <div class="stat-value" id="stat-late">—</div>
+        <div class="stat-label">Late Tasks</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon icon-green">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="stat-value" id="stat-done">—</div>
+        <div class="stat-label">Completed Today</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon icon-blue">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="stat-value" id="stat-avgtime">—</div>
+        <div class="stat-label">Avg Edit Time</div>
+      </div>
+    </div>
+
+    <!-- TASKS SECTION -->
+    <div id="section-tasks">
+      <div class="section-header">
+        <h3>Pending Tasks</h3>
+      </div>
+      <div class="tasks-grid" id="tasksGrid">
+        <p style="color:#bbb;font-size:13px;">Loading tasks...</p>
+      </div>
+    </div>
+
+    <!-- HISTORY SECTION -->
+    <div id="section-history" style="display:none;">
+      <div class="history-section">
+        <div class="section-header">
+          <h3>Edit History</h3>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Vendor</th>
+              <th>Assigned At</th>
+              <th>Edited At</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="historyBody">
+            <tr class="empty-row"><td colspan="5">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- UPLOAD EDITED IMAGE MODAL -->
+  <div class="modal-overlay" id="uploadModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Upload Edited Image</h3>
+        <button class="close-btn" onclick="closeUploadModal()">✕</button>
+      </div>
+      <div class="modal-product-name" id="modalProductName">Product: —</div>
+      <div class="msg-box msg-success" id="modalSuccess"></div>
+      <div class="msg-box msg-error" id="modalError"></div>
+      <div class="upload-area">
+        <input type="file" id="editedImageFile" accept="image/*" onchange="previewEditedImage(event)">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <p><span class="hl">Click to upload</span> edited image</p>
+        <img class="edit-preview" id="editPreview">
+      </div>
+      <button class="submit-btn" id="submitEditBtn" onclick="submitEditedImage()">Mark as Done & Submit</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = 'https://faqysbhbqwpndinyxzrh.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZhcXlzYmhicXdwbmRpbnl4enJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODczMjAzMzQsImV4cCI6MjEwMjg5NjMzNH0.mMoxhImEeg7BVDVgPogClkelxmAqlhi51BksrjAso7k';
+    const { createClient } = supabase;
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    let currentUser = null;
+    let myTasks = [];
+    let allHistory = [];
+    let selectedProductId = null;
+    let timeLimitHours = 2;
+
+    async function checkAuth() {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (!session) { window.location.href = '../index.html'; return; }
+
+      const { data: profile } = await supabaseClient
+        .from('profiles').select('*').eq('id', session.user.id).single();
+
+      if (!profile || profile.role !== 'worker') {
+        alert('Access denied. Workers only.');
+        window.location.href = '../index.html';
+        return;
+      }
+
+      currentUser = profile;
+      document.getElementById('userName').textContent = profile.full_name;
+      document.getElementById('userAvatar').textContent = profile.full_name.charAt(0).toUpperCase();
+
+      loadSettings();
+      loadTasks();
+      loadHistory();
+    }
+
+    async function loadSettings() {
+      const { data } = await supabaseClient
+        .from('settings').select('value').eq('key', 'worker_time_limit_hours').single();
+      if (data) timeLimitHours = parseFloat(data.value);
+    }
+
+    async function loadTasks() {
+      const { data } = await supabaseClient
+        .from('products')
+        .select('*, vendor:vendor_id(full_name)')
+        .eq('worker_id', currentUser.id)
+        .in('status', ['pending_edit', 'in_progress', 'flagged_late'])
+        .order('assigned_at', { ascending: true });
+
+      myTasks = data || [];
+
+      // Update stats
+      const now = new Date();
+      const lateTasks = myTasks.filter(p => {
+        const hrs = (now - new Date(p.assigned_at)) / (1000 * 60 * 60);
+        return hrs > timeLimitHours;
+      });
+
+      document.getElementById('stat-assigned').textContent = myTasks.length;
+      document.getElementById('stat-late').textContent = lateTasks.length;
+
+      renderTasks();
+    }
+
+    async function loadHistory() {
+      const { data } = await supabaseClient
+        .from('products')
+        .select('*, vendor:vendor_id(full_name)')
+        .eq('worker_id', currentUser.id)
+        .in('status', ['edited', 'published'])
+        .order('edited_at', { ascending: false });
+
+      allHistory = data || [];
+
+      // Stats
+      const today = new Date().toDateString();
+      const doneToday = allHistory.filter(p => p.edited_at && new Date(p.edited_at).toDateString() === today).length;
+      document.getElementById('stat-done').textContent = doneToday;
+
+      // Avg edit time
+      const withTimes = allHistory.filter(p => p.assigned_at && p.edited_at);
+      if (withTimes.length > 0) {
+        const avgMs = withTimes.reduce((sum, p) => {
+          return sum + (new Date(p.edited_at) - new Date(p.assigned_at));
+        }, 0) / withTimes.length;
+        const avgMins = Math.floor(avgMs / (1000 * 60));
+        document.getElementById('stat-avgtime').textContent = avgMins + 'm';
+      } else {
+        document.getElementById('stat-avgtime').textContent = '—';
+      }
+
+      renderHistory();
+    }
+
+    function renderTasks() {
+      const grid = document.getElementById('tasksGrid');
+      const now = new Date();
+
+      if (myTasks.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#bbb;">
+            <p style="font-size:32px;margin-bottom:12px;">✅</p>
+            <p style="font-size:14px;font-weight:600;color:#888;">All caught up! No pending tasks.</p>
+          </div>`;
+        return;
+      }
+
+      grid.innerHTML = myTasks.map(p => {
+        const hoursElapsed = (now - new Date(p.assigned_at)) / (1000 * 60 * 60);
+        const isLate = hoursElapsed > timeLimitHours;
+        const hrs = Math.floor(hoursElapsed);
+        const mins = Math.floor((hoursElapsed - hrs) * 60);
+        const timeText = hrs > 0 ? `${hrs}h ${mins}m elapsed` : `${mins}m elapsed`;
+
+        return `
+          <div class="task-card ${isLate ? 'late' : ''}">
+            <div class="task-image">
+              ${isLate ? '<div class="late-badge">🚩 LATE</div>' : ''}
+              ${p.image_url ? `<img src="${p.image_url}" alt="${p.title}">` :
+              `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#f5f5f5;">
+                <svg viewBox="0 0 24 24" width="40" height="40"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#ddd" fill="none" stroke-width="1.5"/></svg>
+              </div>`}
+            </div>
+            <div class="task-info">
+              <div class="task-title">${p.title}</div>
+              <div class="task-meta">Vendor: <span>${p.vendor?.full_name || '—'}</span></div>
+              <div class="task-timer ${isLate ? 'late-timer' : ''}">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                ${timeText} ${isLate ? '— OVERDUE!' : ''}
+              </div>
+              <div class="task-actions">
+                <a class="download-btn" href="${p.image_url}" download="${p.title}" target="_blank">
+                  <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  Download
+                </a>
+                <button class="upload-edit-btn" onclick="openUploadModal('${p.id}', '${p.title}')">
+                  Upload Edited
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderHistory() {
+      const tbody = document.getElementById('historyBody');
+      if (allHistory.length === 0) {
+        tbody.innerHTML = '<tr class="empty-row"><td colspan="5">No completed tasks yet</td></tr>';
+        return;
+      }
+      tbody.innerHTML = allHistory.map(p => `
+        <tr>
+          <td>${p.title}</td>
+          <td>${p.vendor?.full_name || '—'}</td>
+          <td style="color:#aaa;">${new Date(p.assigned_at).toLocaleString()}</td>
+          <td style="color:#aaa;">${p.edited_at ? new Date(p.edited_at).toLocaleString() : '—'}</td>
+          <td><span class="status-pill ${p.status === 'published' ? 'pill-done' : 'pill-pending'}">${p.status}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    function showSection(section, el) {
+      document.getElementById('section-tasks').style.display = section === 'tasks' ? 'block' : 'none';
+      document.getElementById('section-history').style.display = section === 'history' ? 'block' : 'none';
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+      el.classList.add('active');
+      const titles = {
+        tasks: ['My Tasks', 'Products assigned to you for editing'],
+        history: ['Edit History', 'Your completed editing tasks']
+      };
+      document.getElementById('pageTitle').textContent = titles[section][0];
+      document.getElementById('pageSubtitle').textContent = titles[section][1];
+    }
+
+    function openUploadModal(productId, productTitle) {
+      selectedProductId = productId;
+      document.getElementById('modalProductName').textContent = 'Product: ' + productTitle;
+      document.getElementById('modalSuccess').style.display = 'none';
+      document.getElementById('modalError').style.display = 'none';
+      document.getElementById('editedImageFile').value = '';
+      document.getElementById('editPreview').style.display = 'none';
+      document.getElementById('uploadModal').classList.add('show');
+    }
+
+    function closeUploadModal() {
+      document.getElementById('uploadModal').classList.remove('show');
+      selectedProductId = null;
+    }
+
+    function previewEditedImage(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const preview = document.getElementById('editPreview');
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function submitEditedImage() {
+      const file = document.getElementById('editedImageFile').files[0];
+      const successBox = document.getElementById('modalSuccess');
+      const errorBox = document.getElementById('modalError');
+      const btn = document.getElementById('submitEditBtn');
+
+      successBox.style.display = 'none';
+      errorBox.style.display = 'none';
+
+      if (!file) {
+        errorBox.textContent = 'Please select an edited image first.';
+        errorBox.style.display = 'block';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Uploading...';
+
+      try {
+        // Upload edited image
+        const fileName = `edited/${currentUser.id}/${Date.now()}_${file.name}`;
+        const { error: uploadError } = await supabaseClient
+          .storage.from('products').upload(fileName, file);
+
+        if (uploadError) throw new Error('Upload failed: ' + uploadError.message);
+
+        const { data: { publicUrl } } = supabaseClient
+          .storage.from('products').getPublicUrl(fileName);
+
+        // Update product status to edited
+        await supabaseClient
+          .from('products')
+          .update({
+            edited_image_url: publicUrl,
+            status: 'edited',
+            edited_at: new Date().toISOString()
+          })
+          .eq('id', selectedProductId);
+
+        successBox.textContent = '✅ Edited image submitted successfully! Product marked as Done.';
+        successBox.style.display = 'block';
+
+        setTimeout(() => {
+          closeUploadModal();
+          loadTasks();
+          loadHistory();
+        }, 1500);
+
+      } catch (err) {
+        errorBox.textContent = '❌ ' + err.message;
+        errorBox.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Mark as Done & Submit';
+      }
+    }
+
+    async function handleLogout() {
+      await supabaseClient.auth.signOut();
+      window.location.href = '../index.html';
+    }
+
+    checkAuth();
+    setInterval(loadTasks, 60000);
+  </script>
+</body>
+</html>
