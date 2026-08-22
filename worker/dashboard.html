@@ -540,7 +540,7 @@
           .from('products')
           .update({
             edited_image_url: publicUrl,
-            status: 'edited',
+            status: 'Published',
             edited_at: new Date().toISOString()
           })
           .eq('id', selectedProductId);
