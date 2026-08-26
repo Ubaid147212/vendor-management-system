@@ -520,7 +520,8 @@
         if (profile.is_online === false) throw new Error('Your account is marked offline. Contact Admin.');
 
         loadingMsg.textContent = `Welcome ${profile.full_name}. Redirecting...`;
-
+        
+        
         setTimeout(() => {
           switch (profile.role) {
             case 'admin': window.location.href = 'admin/dashboard.html'; break;
