@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orders & Commission — VendorPro Admin</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+    body { background: #0d0d0f; color: white; min-height: 100vh; display: flex; }
+
+    .sidebar {
+      width: 260px; background: #121214; border-right: 1px solid rgba(255,255,255,0.06);
+      display: flex; flex-direction: column; padding: 24px 0; position: fixed; height: 100vh; overflow-y: auto;
+    }
+    .sidebar-logo { display: flex; align-items: center; gap: 12px; padding: 0 24px; margin-bottom: 32px; }
+    .logo-mark {
+      width: 36px; height: 36px; background: linear-gradient(135deg, #ff7a1a, #ff9d4d);
+      border-radius: 10px; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 15px rgba(255,122,26,0.3);
+    }
+    .logo-mark svg { width: 18px; height: 18px; fill: white; }
+    .logo-text { font-size: 16px; font-weight: 700; }
+    .nav-section { padding: 0 16px; margin-bottom: 24px; }
+    .nav-label {
+      font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.25);
+      text-transform: uppercase; letter-spacing: 1px; padding: 0 12px; margin-bottom: 10px;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 10px;
+      color: rgba(255,255,255,0.55); text-decoration: none; font-size: 13.5px; font-weight: 500;
+      margin-bottom: 2px; cursor: pointer; transition: all 0.2s ease;
+    }
+    .nav-item svg { width: 17px; height: 17px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .nav-item:hover { background: rgba(255,255,255,0.04); color: white; }
+    .nav-item.active { background: rgba(255,122,26,0.1); color: #ff9d4d; }
+    .sidebar-footer { margin-top: auto; padding: 16px 24px 0; border-top: 1px solid rgba(255,255,255,0.06); }
+    .user-box { display: flex; align-items: center; gap: 10px; padding: 10px 0; }
+    .user-avatar {
+      width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #ff7a1a, #ff9d4d);
+      display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700;
+    }
+    .user-info h4 { font-size: 13px; font-weight: 600; }
+    .user-info p { font-size: 11px; color: rgba(255,255,255,0.35); }
+    .logout-btn {
+      width: 100%; padding: 9px; background: rgba(255,70,70,0.08); border: 1px solid rgba(255,70,70,0.2);
+      color: #ff8080; border-radius: 8px; font-size: 12.5px; font-weight: 600; cursor: pointer; margin-top: 10px;
+    }
+    .logout-btn:hover { background: rgba(255,70,70,0.15); }
+
+    .main { margin-left: 260px; flex: 1; padding: 32px 40px; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; gap: 16px; }
+    .page-title h1 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+    .page-title p { font-size: 13px; color: rgba(255,255,255,0.35); }
+    .topbar-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-primary {
+      padding: 10px 16px; background: linear-gradient(135deg, #ff7a1a, #ff9d4d); color: white; border: none;
+      border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer;
+    }
+    .btn-ghost {
+      padding: 10px 16px; background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.8);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer;
+    }
+
+    .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 22px; }
+    .stat-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+      border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 18px;
+    }
+    .stat-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+    .stat-icon svg { width: 17px; height: 17px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .icon-orange { background: rgba(255,122,26,0.1); color: #ff9d4d; }
+    .icon-yellow { background: rgba(255,200,0,0.1); color: #ffcc44; }
+    .icon-blue { background: rgba(0,150,255,0.1); color: #4499ff; }
+    .icon-green { background: rgba(0,220,130,0.1); color: #33dd99; }
+    .icon-red { background: rgba(255,70,70,0.1); color: #ff6666; }
+    .stat-value { font-size: 22px; font-weight: 700; margin-bottom: 3px; }
+    .stat-label { font-size: 11.5px; color: rgba(255,255,255,0.4); }
+
+    .info-box {
+      margin-bottom: 18px; padding: 12px 16px; background: rgba(255,122,26,0.06);
+      border: 1px solid rgba(255,122,26,0.15); border-radius: 10px;
+      font-size: 12.5px; color: rgba(255,255,255,0.6);
+    }
+    .info-box b { color: #ff9d4d; }
+
+    .filters-row { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+    .search-input {
+      flex: 1; min-width: 200px; padding: 10px 14px; background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; font-size: 13px; outline: none;
+    }
+    .search-input::placeholder { color: rgba(255,255,255,0.25); }
+    .filter-select {
+      padding: 10px 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px; color: white; font-size: 13px; outline: none;
+    }
+    .filter-select option { background: #1a1a1e; }
+
+    .tabs { display: flex; gap: 4px; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.06); overflow-x: auto; }
+    .tab {
+      padding: 10px 14px; font-size: 12.5px; font-weight: 600; color: rgba(255,255,255,0.4);
+      cursor: pointer; border-bottom: 2px solid transparent; display: flex; align-items: center; gap: 6px; white-space: nowrap;
+    }
+    .tab.active { color: #ff9d4d; border-bottom-color: #ff7a1a; }
+    .tab-count { background: rgba(255,255,255,0.08); padding: 1px 7px; border-radius: 10px; font-size: 11px; }
+    .tab.active .tab-count { background: rgba(255,122,26,0.2); color: #ff9d4d; }
+
+    .table-wrap {
+      background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+      border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; overflow: auto;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 980px; }
+    th {
+      text-align: left; padding: 12px 14px; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.35);
+      text-transform: uppercase; letter-spacing: 0.4px; border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    td { padding: 14px; font-size: 13px; color: rgba(255,255,255,0.75); border-bottom: 1px solid rgba(255,255,255,0.04); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+    .money { font-weight: 700; color: #ff9d4d; }
+    .keep { font-weight: 600; color: #33dd99; }
+
+    .status-pill { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: capitalize; display: inline-block; }
+    .pill-due { background: rgba(255,200,0,0.12); color: #ffcc44; }
+    .pill-overdue { background: rgba(255,70,70,0.12); color: #ff6666; }
+    .pill-vendor_claimed_paid { background: rgba(0,150,255,0.12); color: #4499ff; }
+    .pill-paid_confirmed { background: rgba(0,220,130,0.12); color: #33dd99; }
+    .pill-returned, .pill-voided { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.45); }
+
+    .mini-btn {
+      padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.1); background: transparent; color: rgba(255,255,255,0.65); margin-right: 6px;
+    }
+    .mini-btn.confirm { border-color: rgba(0,220,130,0.3); color: #33dd99; }
+    .mini-btn.reject { border-color: rgba(255,70,70,0.3); color: #ff6666; }
+    .mini-btn.overdue { border-color: rgba(255,200,0,0.3); color: #ffcc44; }
+    .mini-btn.return { border-color: rgba(255,255,255,0.15); color: rgba(255,255,255,0.5); }
+
+    .empty { text-align: center; padding: 50px 20px; color: rgba(255,255,255,0.3); font-size: 13px; }
+
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 100;
+      align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal {
+      background: #16161a; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px;
+      padding: 28px; width: 480px; max-width: 100%; max-height: 90vh; overflow-y: auto;
+    }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+    .modal-header h3 { font-size: 16px; font-weight: 700; }
+    .close-btn {
+      width: 28px; height: 28px; border-radius: 8px; background: rgba(255,255,255,0.05);
+      border: none; color: rgba(255,255,255,0.5); cursor: pointer;
+    }
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.5); margin-bottom: 6px; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; font-size: 13px; outline: none;
+    }
+    .form-group select option { background: #1a1a1e; }
+    .calc-box {
+      background: rgba(255,122,26,0.08); border: 1px solid rgba(255,122,26,0.15);
+      border-radius: 10px; padding: 12px 14px; font-size: 12.5px; color: rgba(255,255,255,0.65); margin-bottom: 14px;
+    }
+    .calc-box b { color: #ff9d4d; }
+    .submit-btn {
+      width: 100%; padding: 12px; background: linear-gradient(135deg, #ff7a1a, #ff9d4d);
+      color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 13.5px; cursor: pointer;
+    }
+    .submit-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .msg { display: none; padding: 10px 12px; border-radius: 8px; font-size: 12.5px; margin-bottom: 12px; }
+    .msg.err { display: block; background: rgba(255,70,70,0.1); border: 1px solid rgba(255,70,70,0.25); color: #ff8080; }
+    .msg.ok { display: block; background: rgba(0,220,130,0.1); border: 1px solid rgba(0,220,130,0.25); color: #33dd99; }
+
+    .toast {
+      position: fixed; bottom: 32px; right: 32px; padding: 12px 20px; background: #1e1e24;
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; font-size: 13px; z-index: 999; display: none;
+    }
+    .toast.show { display: block; }
+    .toast.success { border-color: rgba(0,220,130,0.3); color: #33dd99; }
+    .toast.error { border-color: rgba(255,70,70,0.3); color: #ff6666; }
+
+    @media (max-width: 1100px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+      <div class="logo-text">VendorPro</div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">Overview</div>
+      <a class="nav-item" href="dashboard.html">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">Management</div>
+      <a class="nav-item" href="users.html">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Users
+      </a>
+      <a class="nav-item" href="products.html">
+        <svg viewBox="0 0 24 24"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>
+        Products
+      </a>
+      <a class="nav-item active" href="orders.html">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        Orders & Commission
+      </a>
+      <a class="nav-item" href="workers.html">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        Workers
+      </a>
+      <a class="nav-item" href="delivery.html">
+        <svg viewBox="0 0 24 24"><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/><path d="M4 17h2l2-9h9l3 6h-2"/></svg>
+        Delivery
+      </a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">System</div>
+      <a class="nav-item" href="disputes.html">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Disputes
+      </a>
+      <a class="nav-item" href="settings.html">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </a>
+    </div>
+    <div class="sidebar-footer">
+      <div class="user-box">
+        <div class="user-avatar" id="userAvatar">A</div>
+        <div class="user-info"><h4 id="userName">Loading...</h4><p>Administrator</p></div>
+      </div>
+      <button class="logout-btn" onclick="handleLogout()">Sign Out</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="page-title">
+        <h1>Orders & Commission</h1>
+        <p>Track sales, vendor claims, and platform commission</p>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn-ghost" onclick="document.getElementById('csvFile').click()">Import CSV</button>
+        <input type="file" id="csvFile" accept=".csv" style="display:none" onchange="importCsv(event)">
+        <button class="btn-primary" onclick="openAddModal()">+ Add Order</button>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon icon-orange"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/></svg></div>
+        <div class="stat-value" id="stat-total">—</div>
+        <div class="stat-label">Total Orders</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon icon-yellow"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div class="stat-value" id="stat-due">—</div>
+        <div class="stat-label">Due / Overdue</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon icon-blue"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        <div class="stat-value" id="stat-claimed">—</div>
+        <div class="stat-label">Awaiting Confirm</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon icon-green"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <div class="stat-value" id="stat-earned">—</div>
+        <div class="stat-label">Commission Confirmed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon icon-red"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <div class="stat-value" id="stat-pending-rs">—</div>
+        <div class="stat-label">Commission Pending</div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      Daraz API is not connected yet. Add orders here or import a CSV.
+      Vendor clicks <b>I Paid</b> → status <b>vendor_claimed_paid</b> → you Confirm or Reject.
+    </div>
+
+    <div class="filters-row">
+      <input class="search-input" id="searchInput" placeholder="Search product or vendor..." oninput="renderOrders()">
+      <select class="filter-select" id="vendorFilter" onchange="renderOrders()">
+        <option value="all">All Vendors</option>
+      </select>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" data-status="all" onclick="filterStatus('all', this)">All <span class="tab-count" id="c-all">0</span></div>
+      <div class="tab" data-status="due" onclick="filterStatus('due', this)">Due <span class="tab-count" id="c-due">0</span></div>
+      <div class="tab" data-status="overdue" onclick="filterStatus('overdue', this)">Overdue <span class="tab-count" id="c-overdue">0</span></div>
+      <div class="tab" data-status="vendor_claimed_paid" onclick="filterStatus('vendor_claimed_paid', this)">Claimed <span class="tab-count" id="c-claimed">0</span></div>
+      <div class="tab" data-status="paid_confirmed" onclick="filterStatus('paid_confirmed', this)">Confirmed <span class="tab-count" id="c-paid">0</span></div>
+      <div class="tab" data-status="returned" onclick="filterStatus('returned', this)">Returned <span class="tab-count" id="c-returned">0</span></div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Vendor</th>
+            <th>Selling</th>
+            <th>%</th>
+            <th>Admin Cut</th>
+            <th>Vendor Keeps</th>
+            <th>Payment</th>
+            <th>Order</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="ordersBody">
+          <tr><td colspan="10" class="empty">Loading orders...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <div class="modal-overlay" id="addModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Add Order</h3>
+        <button class="close-btn" onclick="closeAddModal()">✕</button>
+      </div>
+      <div class="msg" id="addMsg"></div>
+      <div class="form-group">
+        <label>Vendor *</label>
+        <select id="addVendor" onchange="onVendorChange()"></select>
+      </div>
+      <div class="form-group">
+        <label>Product *</label>
+        <select id="addProduct" onchange="onProductChange()">
+          <option value="">Select vendor first</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Selling Price (Rs.) *</label>
+        <input type="number" id="addPrice" min="0" step="0.01" oninput="recalc()">
+      </div>
+      <div class="form-group">
+        <label>Commission % *</label>
+        <input type="number" id="addPercent" min="0" max="100" step="0.01" oninput="recalc()">
+      </div>
+      <div class="form-group">
+        <label>Order status</label>
+        <select id="addOrderStatus">
+          <option value="pending">pending</option>
+          <option value="processing">processing</option>
+          <option value="shipped">shipped</option>
+          <option value="delivered">delivered</option>
+          <option value="cancelled">cancelled</option>
+        </select>
+      </div>
+      <div class="calc-box" id="calcBox">Admin cut: <b>Rs. 0</b> &nbsp;|&nbsp; Vendor keeps: <b>Rs. 0</b></div>
+      <button class="submit-btn" id="addBtn" onclick="submitOrder()">Create Order (payment: due)</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = 'https://faqysbhbqwpndinyxzrh.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZhcXlzYmhicXdwbmRpbnl4enJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODczMjAzMzQsImV4cCI6MjEwMjg5NjMzNH0.mMoxhImEeg7BVDVgPogClkelxmAqlhi51BksrjAso7k';
+    const { createClient } = supabase;
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    let allOrders = [];
+    let allVendors = [];
+    let vendorProducts = [];
+    let currentFilter = 'all';
+
+    async function checkAuth() {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (!session) { window.location.href = '../index.html'; return; }
+      const { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', session.user.id).single();
+      if (!profile || profile.role !== 'admin') {
+        alert('Access denied. Admin only.');
+        window.location.href = '../index.html';
+        return;
+      }
+      document.getElementById('userName').textContent = profile.full_name;
+      document.getElementById('userAvatar').textContent = profile.full_name.charAt(0).toUpperCase();
+      await loadVendors();
+      await loadOrders();
+    }
+
+    async function loadVendors() {
+      const { data } = await supabaseClient.from('profiles').select('id, full_name, commission_percent').eq('role', 'vendor');
+      allVendors = data || [];
+      const vf = document.getElementById('vendorFilter');
+      const av = document.getElementById('addVendor');
+      av.innerHTML = '<option value="">Select vendor</option>';
+      allVendors.forEach(v => {
+        const o1 = document.createElement('option'); o1.value = v.id; o1.textContent = v.full_name; vf.appendChild(o1);
+        const o2 = document.createElement('option'); o2.value = v.id; o2.textContent = v.full_name; av.appendChild(o2);
+      });
+    }
+
+    async function loadOrders() {
+      const { data, error } = await supabaseClient
+        .from('orders')
+        .select('*, products(title), vendor:vendor_id(full_name)')
+        .order('created_at', { ascending: false });
+      if (error) {
+        document.getElementById('ordersBody').innerHTML = `<tr><td colspan="10" class="empty">Error: ${error.message}</td></tr>`;
+        return;
+      }
+      allOrders = data || [];
+      updateStats();
+      renderOrders();
+    }
+
+    function n(v) { return parseFloat(v) || 0; }
+    function rs(v) { return 'Rs. ' + n(v).toLocaleString(); }
+
+    function updateStats() {
+      const due = allOrders.filter(o => o.payment_status === 'due' || o.payment_status === 'overdue');
+      const claimed = allOrders.filter(o => o.payment_status === 'vendor_claimed_paid');
+      const paid = allOrders.filter(o => o.payment_status === 'paid_confirmed');
+      const returned = allOrders.filter(o => o.payment_status === 'returned' || o.payment_status === 'voided');
+      document.getElementById('stat-total').textContent = allOrders.length;
+      document.getElementById('stat-due').textContent = due.length;
+      document.getElementById('stat-claimed').textContent = claimed.length;
+      document.getElementById('stat-earned').textContent = rs(paid.reduce((s, o) => s + n(o.commission_amount), 0));
+      document.getElementById('stat-pending-rs').textContent = rs(due.concat(claimed).reduce((s, o) => s + n(o.commission_amount), 0));
+      document.getElementById('c-all').textContent = allOrders.length;
+      document.getElementById('c-due').textContent = allOrders.filter(o => o.payment_status === 'due').length;
+      document.getElementById('c-overdue').textContent = allOrders.filter(o => o.payment_status === 'overdue').length;
+      document.getElementById('c-claimed').textContent = claimed.length;
+      document.getElementById('c-paid').textContent = paid.length;
+      document.getElementById('c-returned').textContent = returned.length;
+    }
+
+    function filterStatus(status, el) {
+      currentFilter = status;
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      renderOrders();
+    }
+
+    function pillClass(st) {
+      if (st === 'returned' || st === 'voided') return 'returned';
+      return st || 'due';
+    }
+
+    function renderOrders() {
+      const q = document.getElementById('searchInput').value.toLowerCase().trim();
+      const vendorId = document.getElementById('vendorFilter').value;
+      let rows = allOrders;
+      if (currentFilter === 'returned') {
+        rows = rows.filter(o => o.payment_status === 'returned' || o.payment_status === 'voided');
+      } else if (currentFilter !== 'all') {
+        rows = rows.filter(o => o.payment_status === currentFilter);
+      }
+      if (vendorId !== 'all') rows = rows.filter(o => o.vendor_id === vendorId);
+      if (q) {
+        rows = rows.filter(o =>
+          (o.products?.title || '').toLowerCase().includes(q) ||
+          (o.vendor?.full_name || '').toLowerCase().includes(q)
+        );
+      }
+
+      const tbody = document.getElementById('ordersBody');
+      if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="10" class="empty">No orders found</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = rows.map(o => {
+        const st = o.payment_status || 'due';
+        let actions = '';
+        if (st === 'vendor_claimed_paid') {
+          actions = `
+            <button class="mini-btn confirm" onclick="setPayment('${o.id}','paid_confirmed')">Confirm</button>
+            <button class="mini-btn reject" onclick="setPayment('${o.id}','due')">Reject</button>`;
+        } else if (st === 'due') {
+          actions = `
+            <button class="mini-btn confirm" onclick="setPayment('${o.id}','paid_confirmed')">Mark Paid</button>
+            <button class="mini-btn overdue" onclick="setPayment('${o.id}','overdue')">Overdue</button>
+            <button class="mini-btn return" onclick="setPayment('${o.id}','returned')">Return</button>`;
+        } else if (st === 'overdue') {
+          actions = `
+            <button class="mini-btn confirm" onclick="setPayment('${o.id}','paid_confirmed')">Mark Paid</button>
+            <button class="mini-btn return" onclick="setPayment('${o.id}','returned')">Return</button>`;
+        } else if (st === 'paid_confirmed') {
+          actions = `<span style="font-size:12px;color:#33dd99;">✅ Confirmed</span>`;
+        } else {
+          actions = `<span style="font-size:12px;color:rgba(255,255,255,0.35);">—</span>`;
+        }
+
+        return `<tr>
+          <td>${o.products?.title || '—'}</td>
+          <td>${o.vendor?.full_name || '—'}</td>
+          <td>${rs(o.selling_price)}</td>
+          <td>${n(o.commission_percent)}%</td>
+          <td class="money">${rs(o.commission_amount)}</td>
+          <td class="keep">${rs(o.vendor_amount)}</td>
+          <td><span class="status-pill pill-${pillClass(st)}">${st.replace(/_/g,' ')}</span></td>
+          <td>${o.order_status || '—'}</td>
+          <td style="color:rgba(255,255,255,0.35);font-size:12px;">${o.created_at ? new Date(o.created_at).toLocaleDateString() : '—'}</td>
+          <td>${actions}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    async function setPayment(id, status) {
+      const extra = status === 'paid_confirmed' ? { vendor_confirmed: true } : {};
+      if (status === 'due') extra.vendor_confirmed = false;
+      const { error } = await supabaseClient.from('orders').update({ payment_status: status, ...extra }).eq('id', id);
+      if (error) showToast('❌ ' + error.message, 'error');
+      else {
+        showToast('✅ Updated', 'success');
+        await loadOrders();
+      }
+    }
+
+    function openAddModal() {
+      document.getElementById('addMsg').className = 'msg';
+      document.getElementById('addMsg').textContent = '';
+      document.getElementById('addModal').classList.add('show');
+    }
+    function closeAddModal() { document.getElementById('addModal').classList.remove('show'); }
+
+    async function onVendorChange() {
+      const vendorId = document.getElementById('addVendor').value;
+      const sel = document.getElementById('addProduct');
+      sel.innerHTML = '<option value="">Loading...</option>';
+      vendorProducts = [];
+      if (!vendorId) { sel.innerHTML = '<option value="">Select vendor first</option>'; return; }
+      const vendor = allVendors.find(v => v.id === vendorId);
+      document.getElementById('addPercent').value = vendor?.commission_percent ?? 0;
+      const { data } = await supabaseClient.from('products').select('id, title, selling_price, status').eq('vendor_id', vendorId).order('created_at', { ascending: false });
+      vendorProducts = data || [];
+      if (!vendorProducts.length) {
+        sel.innerHTML = '<option value="">No products for this vendor</option>';
+        return;
+      }
+      sel.innerHTML = '<option value="">Select product</option>' + vendorProducts.map(p =>
+        `<option value="${p.id}">${p.title} (${p.status})</option>`
+      ).join('');
+      recalc();
+    }
+
+    function onProductChange() {
+      const p = vendorProducts.find(x => x.id === document.getElementById('addProduct').value);
+      if (p) document.getElementById('addPrice').value = p.selling_price;
+      recalc();
+    }
+
+    function recalc() {
+      const price = n(document.getElementById('addPrice').value);
+      const pct = n(document.getElementById('addPercent').value);
+      const cut = +(price * pct / 100).toFixed(2);
+      const keep = +(price - cut).toFixed(2);
+      document.getElementById('calcBox').innerHTML = `Admin cut: <b>${rs(cut)}</b> &nbsp;|&nbsp; Vendor keeps: <b>${rs(keep)}</b>`;
+    }
+
+    async function submitOrder() {
+      const msg = document.getElementById('addMsg');
+      const vendor_id = document.getElementById('addVendor').value;
+      const product_id = document.getElementById('addProduct').value;
+      const selling_price = n(document.getElementById('addPrice').value);
+      const commission_percent = n(document.getElementById('addPercent').value);
+      const order_status = document.getElementById('addOrderStatus').value;
+      if (!vendor_id || !product_id || selling_price <= 0) {
+        msg.className = 'msg err'; msg.textContent = 'Vendor, product, and price are required.'; return;
+      }
+      const commission_amount = +(selling_price * commission_percent / 100).toFixed(2);
+      const vendor_amount = +(selling_price - commission_amount).toFixed(2);
+      const btn = document.getElementById('addBtn');
+      btn.disabled = true;
+      const { error } = await supabaseClient.from('orders').insert({
+        vendor_id, product_id, selling_price, commission_percent, commission_amount, vendor_amount,
+        payment_status: 'due', vendor_confirmed: false, order_status
+      });
+      btn.disabled = false;
+      if (error) { msg.className = 'msg err'; msg.textContent = error.message; return; }
+      msg.className = 'msg ok'; msg.textContent = 'Order created.';
+      setTimeout(async () => { closeAddModal(); await loadOrders(); }, 700);
+    }
+
+    async function importCsv(event) {
+      const file = event.target.files[0];
+      event.target.value = '';
+      if (!file) return;
+      const text = await file.text();
+      const lines = text.split(/\r?\n/).filter(l => l.trim());
+      if (lines.length < 2) { showToast('❌ CSV empty', 'error'); return; }
+      const header = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/"/g, ''));
+      const idx = (name) => header.indexOf(name);
+      // Expected: vendor_id, product_id, selling_price, commission_percent (optional)
+      if (idx('vendor_id') < 0 || idx('product_id') < 0 || idx('selling_price') < 0) {
+        showToast('❌ CSV needs columns: vendor_id, product_id, selling_price', 'error');
+        return;
+      }
+      const rows = [];
+      for (let i = 1; i < lines.length; i++) {
+        const cols = lines[i].split(',').map(c => c.trim().replace(/^"|"$/g, ''));
+        const vendor_id = cols[idx('vendor_id')];
+        const product_id = cols[idx('product_id')];
+        const selling_price = n(cols[idx('selling_price')]);
+        if (!vendor_id || !product_id || selling_price <= 0) continue;
+        const vendor = allVendors.find(v => v.id === vendor_id);
+        const commission_percent = idx('commission_percent') >= 0 ? n(cols[idx('commission_percent')]) : n(vendor?.commission_percent);
+        const commission_amount = +(selling_price * commission_percent / 100).toFixed(2);
+        rows.push({
+          vendor_id, product_id, selling_price, commission_percent, commission_amount,
+          vendor_amount: +(selling_price - commission_amount).toFixed(2),
+          payment_status: 'due', vendor_confirmed: false, order_status: 'pending'
+        });
+      }
+      if (!rows.length) { showToast('❌ No valid rows', 'error'); return; }
+      const { error } = await supabaseClient.from('orders').insert(rows);
+      if (error) showToast('❌ ' + error.message, 'error');
+      else { showToast('✅ Imported ' + rows.length + ' orders', 'success'); await loadOrders(); }
+    }
+
+    function showToast(message, type) {
+      const t = document.getElementById('toast');
+      t.textContent = message; t.className = 'toast show ' + type;
+      setTimeout(() => { t.className = 'toast'; }, 3000);
+    }
+
+    async function handleLogout() {
+      await supabaseClient.auth.signOut();
+      window.location.href = '../index.html';
+    }
+
+    document.getElementById('addModal').addEventListener('click', function (e) {
+      if (e.target === this) closeAddModal();
+    });
+
+    checkAuth();
+  </script>
+</body>
+</html>
