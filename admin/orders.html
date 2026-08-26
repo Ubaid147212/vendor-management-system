@@ -578,11 +578,25 @@
       }
       const commission_amount = +(selling_price * commission_percent / 100).toFixed(2);
       const vendor_amount = +(selling_price - commission_amount).toFixed(2);
-      const btn = document.getElementById('addBtn');
+            const btn = document.getElementById('addBtn');
       btn.disabled = true;
+
+      const { data: prodRow } = await supabaseClient
+        .from('products').select('worker_id').eq('id', product_id).single();
+      const worker_id = prodRow?.worker_id || null;
+      let worker_commission_amount = 0;
+      if (worker_id) {
+        const { data: wprof } = await supabaseClient
+          .from('profiles').select('commission_percent').eq('id', worker_id).single();
+        worker_commission_amount = +((selling_price * (parseFloat(wprof?.commission_percent) || 0) / 100).toFixed(2));
+      }
+
       const { error } = await supabaseClient.from('orders').insert({
         vendor_id, product_id, selling_price, commission_percent, commission_amount, vendor_amount,
-        payment_status: 'due', vendor_confirmed: false, order_status
+        payment_status: 'due', vendor_confirmed: false, order_status,
+        worker_id,
+        worker_commission_amount,
+        worker_payout_status: worker_id ? 'due' : null
       });
       btn.disabled = false;
       if (error) { msg.className = 'msg err'; msg.textContent = error.message; return; }
