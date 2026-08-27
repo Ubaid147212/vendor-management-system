@@ -498,7 +498,13 @@
         } else {
           actions = `<span style="font-size:12px;color:rgba(255,255,255,0.35);">—</span>`;
         }
-
+        
+        if (o.worker_payout_status === 'confirmed') {
+          actions += ` <button class="mini-btn confirm" onclick="setStaffPay('${o.id}','worker_payout_status')">Pay worker</button>`;
+        }
+        if (o.delivery_payout_status === 'confirmed') {
+          actions += ` <button class="mini-btn confirm" onclick="setStaffPay('${o.id}','delivery_payout_status')">Pay delivery</button>`;
+        }
         return `<tr>
           <td>${o.products?.title || '—'}</td>
           <td>${o.vendor?.full_name || '—'}</td>
