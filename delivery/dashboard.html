@@ -8,79 +8,43 @@
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
     body { background: #f5f5f7; color: #1a1a1a; min-height: 100vh; display: flex; }
-
-    .sidebar {
-      width: 260px; background: white; border-right: 1px solid #e8e8e8;
-      display: flex; flex-direction: column; padding: 24px 0; position: fixed; height: 100vh;
-      box-shadow: 2px 0 20px rgba(0,0,0,0.06);
-    }
+    .sidebar { width: 260px; background: white; border-right: 1px solid #e8e8e8; display: flex; flex-direction: column; padding: 24px 0; position: fixed; height: 100vh; box-shadow: 2px 0 20px rgba(0,0,0,0.06); }
     .sidebar-logo { display: flex; align-items: center; gap: 12px; padding: 0 24px; margin-bottom: 32px; }
-    .logo-mark {
-      width: 38px; height: 38px; background: linear-gradient(135deg, #ff7a1a, #ff9d4d);
-      border-radius: 10px; display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 4px 12px rgba(255,122,26,0.3);
-    }
+    .logo-mark { width: 38px; height: 38px; background: linear-gradient(135deg, #ff7a1a, #ff9d4d); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
     .logo-mark svg { width: 18px; height: 18px; fill: white; }
     .logo-text { font-size: 16px; font-weight: 700; }
     .nav-section { padding: 0 16px; }
     .nav-label { font-size: 11px; font-weight: 600; color: #aaa; text-transform: uppercase; letter-spacing: 1px; padding: 0 12px; margin-bottom: 8px; }
-    .nav-item {
-      display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 10px;
-      color: #666; text-decoration: none; font-size: 13.5px; font-weight: 500; margin-bottom: 2px; cursor: pointer;
-    }
-    .nav-item svg { width: 17px; height: 17px; stroke: currentColor; fill: none; stroke-width: 2; }
-    .nav-item:hover { background: #fff4ee; color: #ff7a1a; }
+    .nav-item { display: block; padding: 11px 12px; border-radius: 10px; color: #666; font-size: 13.5px; font-weight: 500; cursor: pointer; margin-bottom: 2px; }
     .nav-item.active { background: linear-gradient(135deg, rgba(255,122,26,0.12), rgba(255,157,77,0.08)); color: #ff7a1a; font-weight: 600; }
     .sidebar-footer { margin-top: auto; padding: 16px 24px 0; border-top: 1px solid #f0f0f0; }
     .user-box { display: flex; align-items: center; gap: 10px; padding: 10px 0; }
-    .user-avatar {
-      width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #ff7a1a, #ff9d4d);
-      display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: white;
-    }
-    .user-info h4 { font-size: 13px; font-weight: 600; }
+    .user-avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #ff7a1a, #ff9d4d); display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; }
+    .user-info h4 { font-size: 13px; }
     .user-info p { font-size: 11px; color: #999; }
-    .logout-btn {
-      width: 100%; padding: 9px; background: #fff1f1; border: 1px solid #ffd0d0;
-      color: #e05555; border-radius: 8px; font-size: 12.5px; font-weight: 600; cursor: pointer; margin-top: 10px;
-    }
-
+    .logout-btn { width: 100%; padding: 9px; background: #fff1f1; border: 1px solid #ffd0d0; color: #e05555; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; }
     .main { margin-left: 260px; flex: 1; padding: 32px 40px; }
-    .topbar { margin-bottom: 24px; }
-    .page-title h1 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
-    .page-title p { font-size: 13px; color: #888; }
-
-    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
-    .stat-card { background: white; border-radius: 14px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); border: 1px solid #f0f0f0; }
-    .stat-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
-    .stat-icon svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; }
-    .icon-orange { background: rgba(255,122,26,0.1); color: #ff7a1a; }
-    .icon-blue { background: rgba(0,120,255,0.1); color: #0078ff; }
-    .icon-green { background: rgba(0,200,120,0.1); color: #00c878; }
-    .icon-red { background: rgba(255,70,70,0.1); color: #ff4646; }
-    .stat-value { font-size: 26px; font-weight: 700; margin-bottom: 4px; }
-    .stat-label { font-size: 12.5px; color: #888; }
-
+    .page-title h1 { font-size: 24px; font-weight: 700; }
+    .page-title p { font-size: 13px; color: #888; margin: 4px 0 24px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+    .stat-card { background: white; border-radius: 14px; padding: 20px; border: 1px solid #f0f0f0; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+    .stat-value { font-size: 24px; font-weight: 700; }
+    .stat-label { font-size: 12px; color: #888; }
     .tasks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
-    .task-card { background: white; border-radius: 14px; padding: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); border: 1px solid #f0f0f0; }
-    .task-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+    .task-card { background: white; border-radius: 14px; padding: 18px; border: 1px solid #f0f0f0; }
+    .task-title { font-weight: 700; margin: 8px 0; }
     .task-meta { font-size: 13px; color: #666; margin-bottom: 6px; }
-    .task-meta b { color: #ff7a1a; }
-    .pill { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 12px; text-transform: capitalize; }
-    .pill-assigned, .pill-pending, .pill-processing { background: #fff8e1; color: #f59500; }
-    .pill-picked_up { background: #e8f0ff; color: #3366ff; }
-    .pill-out_for_delivery { background: #fff4ee; color: #ff7a1a; }
-    .pill-delivered { background: #e8faf2; color: #00a85a; }
-    .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-    .btn {
-      flex: 1; min-width: 110px; padding: 10px; border: none; border-radius: 8px; font-size: 12.5px;
-      font-weight: 700; cursor: pointer; color: white; background: linear-gradient(135deg, #ff7a1a, #ff9d4d);
-    }
-    .btn.ghost { background: #f5f5f7; color: #555; border: 1.5px solid #e8e8e8; }
-    .empty { text-align: center; padding: 50px; color: #bbb; grid-column: 1/-1; }
-    .history { background: white; border-radius: 14px; padding: 22px; margin-top: 28px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); border: 1px solid #f0f0f0; }
+    .btn { padding: 10px 14px; border: none; border-radius: 8px; background: linear-gradient(135deg, #ff7a1a, #ff9d4d); color: white; font-weight: 700; cursor: pointer; margin-right: 8px; margin-top: 8px; }
+    .panel { background: white; border-radius: 14px; padding: 22px; border: 1px solid #f0f0f0; }
     table { width: 100%; border-collapse: collapse; }
     th { text-align: left; padding: 12px; font-size: 11px; color: #aaa; text-transform: uppercase; border-bottom: 1.5px solid #f0f0f0; }
-    td { padding: 12px; font-size: 13px; color: #444; border-bottom: 1px solid #f8f8f8; }
+    td { padding: 12px; font-size: 13px; border-bottom: 1px solid #f8f8f8; }
+    .pill { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+    .pill-due { background: #fff8e1; color: #f59500; }
+    .pill-confirmed { background: #e8f0ff; color: #3366ff; }
+    .pill-paid_confirmed { background: #e8faf2; color: #00a85a; }
+    .pay-btn { padding: 6px 14px; background: #ff7a1a; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
+    .empty { text-align: center; padding: 40px; color: #bbb; }
   </style>
 </head>
 <body>
@@ -91,14 +55,9 @@
     </div>
     <div class="nav-section">
       <div class="nav-label">Menu</div>
-      <a class="nav-item active" onclick="showSection('active', this)">
-        <svg viewBox="0 0 24 24"><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/><path d="M4 17h2l2-9h9l3 6h-2"/></svg>
-        Active Deliveries
-      </a>
-      <a class="nav-item" onclick="showSection('history', this)">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        History
-      </a>
+      <a class="nav-item active" onclick="showSection('active', this)">Active Deliveries</a>
+      <a class="nav-item" onclick="showSection('commission', this)">My Commission</a>
+      <a class="nav-item" onclick="showSection('history', this)">History</a>
     </div>
     <div class="sidebar-footer">
       <div class="user-box">
@@ -108,71 +67,46 @@
       <button class="logout-btn" onclick="handleLogout()">Sign Out</button>
     </div>
   </div>
-
   <div class="main">
-    <div class="topbar">
-      <div class="page-title">
-        <h1 id="pageTitle">Active Deliveries</h1>
-        <p id="pageSubtitle">Orders assigned to you</p>
-      </div>
+    <div class="page-title">
+      <h1 id="pageTitle">Active Deliveries</h1>
+      <p id="pageSubtitle">Orders assigned to you</p>
     </div>
-
     <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-icon icon-orange"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/></svg></div>
-        <div class="stat-value" id="stat-active">—</div>
-        <div class="stat-label">Active</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon icon-blue"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-        <div class="stat-value" id="stat-out">—</div>
-        <div class="stat-label">Out for delivery</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon icon-green"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <div class="stat-value" id="stat-today">—</div>
-        <div class="stat-label">Delivered today</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon icon-red"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg></div>
-        <div class="stat-value" id="stat-alldone">—</div>
-        <div class="stat-label">All delivered</div>
-      </div>
+      <div class="stat-card"><div class="stat-value" id="stat-active">—</div><div class="stat-label">Active jobs</div></div>
+      <div class="stat-card"><div class="stat-value" id="stat-done">—</div><div class="stat-label">Delivered</div></div>
+      <div class="stat-card"><div class="stat-value" id="stat-due">—</div><div class="stat-label">Commission due</div></div>
+      <div class="stat-card"><div class="stat-value" id="stat-paid">—</div><div class="stat-label">Commission paid</div></div>
     </div>
-
-    <div id="section-active">
-      <div class="tasks-grid" id="activeGrid"><p class="empty">Loading...</p></div>
-    </div>
-
-    <div id="section-history" class="history" style="display:none;">
-      <h3 style="margin-bottom:14px;font-size:16px;">Completed</h3>
+    <div id="section-active"><div class="tasks-grid" id="activeGrid"><p class="empty">Loading...</p></div></div>
+    <div id="section-commission" class="panel" style="display:none;">
+      <p style="font-size:13px;color:#888;margin-bottom:14px;">Money from a <b>sold</b> product. Confirm when you got paid. No time-limit alarms.</p>
       <table>
-        <thead><tr><th>Product</th><th>Customer</th><th>Address</th><th>Status</th><th>Date</th></tr></thead>
-        <tbody id="historyBody"><tr><td colspan="5" style="text-align:center;color:#bbb;padding:30px;">Loading...</td></tr></tbody>
+        <thead><tr><th>Product</th><th>Sale</th><th>Your commission</th><th>Status</th><th></th></tr></thead>
+        <tbody id="commBody"></tbody>
+      </table>
+    </div>
+    <div id="section-history" class="panel" style="display:none;">
+      <table>
+        <thead><tr><th>Product</th><th>Customer</th><th>Address</th><th>Status</th></tr></thead>
+        <tbody id="historyBody"></tbody>
       </table>
     </div>
   </div>
-
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const SUPABASE_URL = 'https://faqysbhbqwpndinyxzrh.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZhcXlzYmhicXdwbmRpbnl4enJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODczMjAzMzQsImV4cCI6MjEwMjg5NjMzNH0.mMoxhImEeg7BVDVgPogClkelxmAqlhi51BksrjAso7k';
     const { createClient } = supabase;
     const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    let currentUser = null;
-    let myOrders = [];
+    let currentUser = null, myOrders = [];
     const ACTIVE = ['assigned', 'picked_up', 'out_for_delivery', 'pending', 'processing', 'shipped'];
 
     async function checkAuth() {
       const { data: { session } } = await supabaseClient.auth.getSession();
       if (!session) { window.location.href = '../index.html'; return; }
       const { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', session.user.id).single();
-      if (!profile || profile.role !== 'delivery') {
-        alert('Access denied. Delivery only.');
-        window.location.href = '../index.html';
-        return;
-      }
+      if (!profile || profile.role !== 'delivery') { alert('Access denied.'); window.location.href = '../index.html'; return; }
       currentUser = profile;
       document.getElementById('userName').textContent = profile.full_name;
       document.getElementById('userAvatar').textContent = profile.full_name.charAt(0).toUpperCase();
@@ -180,90 +114,67 @@
     }
 
     async function loadOrders() {
-      const { data, error } = await supabaseClient
-        .from('orders')
-        .select('*, products(title)')
-        .eq('delivery_id', currentUser.id)
-        .order('created_at', { ascending: false });
-      if (error) {
-        document.getElementById('activeGrid').innerHTML = `<p class="empty">${error.message}<br><br>If it says delivery_id does not exist, run the SQL in Supabase first.</p>`;
-        return;
-      }
+      const { data, error } = await supabaseClient.from('orders').select('*, products(title)').eq('delivery_id', currentUser.id).order('created_at', { ascending: false });
+      if (error) { document.getElementById('activeGrid').innerHTML = '<p class="empty">' + error.message + '</p>'; return; }
       myOrders = data || [];
       render();
     }
 
+    function moneyDue() {
+      return myOrders.filter(function (o) { return o.delivery_payout_status === 'due' || o.delivery_payout_status === 'confirmed'; })
+        .reduce(function (s, o) { return s + (parseFloat(o.delivery_commission_amount) || 0); }, 0);
+    }
+    function moneyPaid() {
+      return myOrders.filter(function (o) { return o.delivery_payout_status === 'paid_confirmed'; })
+        .reduce(function (s, o) { return s + (parseFloat(o.delivery_commission_amount) || 0); }, 0);
+    }
+
     function render() {
-      const today = new Date().toDateString();
-      const active = myOrders.filter(o => ACTIVE.includes(o.order_status) && o.order_status !== 'delivered' && o.order_status !== 'cancelled');
-      const out = myOrders.filter(o => o.order_status === 'out_for_delivery');
-      const delivered = myOrders.filter(o => o.order_status === 'delivered');
-      const deliveredToday = delivered.filter(o => o.created_at && new Date(o.created_at).toDateString() === today);
-
+      var active = myOrders.filter(function (o) { return ACTIVE.indexOf(o.order_status) >= 0 && o.order_status !== 'delivered'; });
+      var delivered = myOrders.filter(function (o) { return o.order_status === 'delivered'; });
       document.getElementById('stat-active').textContent = active.length;
-      document.getElementById('stat-out').textContent = out.length;
-      document.getElementById('stat-today').textContent = deliveredToday.length;
-      document.getElementById('stat-alldone').textContent = delivered.length;
+      document.getElementById('stat-done').textContent = delivered.length;
+      document.getElementById('stat-due').textContent = 'Rs. ' + moneyDue().toLocaleString();
+      document.getElementById('stat-paid').textContent = 'Rs. ' + moneyPaid().toLocaleString();
 
-      const grid = document.getElementById('activeGrid');
-      if (!active.length) {
-        grid.innerHTML = '<p class="empty">No active deliveries. Admin will assign orders to you.</p>';
-      } else {
-        grid.innerHTML = active.map(o => {
-          const st = o.order_status || 'assigned';
-          let btns = '';
-          if (st === 'assigned' || st === 'pending' || st === 'processing' || st === 'shipped') {
-            btns = `<button class="btn" onclick="setStatus('${o.id}','picked_up')">Picked up</button>`;
-          } else if (st === 'picked_up') {
-            btns = `<button class="btn" onclick="setStatus('${o.id}','out_for_delivery')">Out for delivery</button>`;
-          } else if (st === 'out_for_delivery') {
-            btns = `<button class="btn" onclick="setStatus('${o.id}','delivered')">Mark delivered</button>
-                    <button class="btn ghost" onclick="setStatus('${o.id}','assigned')">Can't deliver</button>`;
-          }
-          const maps = o.delivery_address ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(o.delivery_address)}` : '';
-          return `<div class="task-card">
-            <span class="pill pill-${st}">${st.replace(/_/g,' ')}</span>
-            <div class="task-title">${o.products?.title || 'Order'}</div>
-            <div class="task-meta">Customer: <b>${o.customer_name || '—'}</b></div>
-            <div class="task-meta">Phone: <b>${o.customer_phone ? `<a href="tel:${o.customer_phone}">${o.customer_phone}</a>` : '—'}</b></div>
-            <div class="task-meta">Address: <b>${o.delivery_address || '—'}</b></div>
-            ${maps ? `<div class="task-meta"><a href="${maps}" target="_blank" style="color:#ff7a1a;font-weight:600;">Open in Maps</a></div>` : ''}
-            <div class="actions">${btns}</div>
-          </div>`;
-        }).join('');
-      }
+      var grid = document.getElementById('activeGrid');
+      if (!active.length) grid.innerHTML = '<p class="empty">No active deliveries.</p>';
+      else grid.innerHTML = active.map(function (o) {
+        var st = o.order_status || 'assigned';
+        var btns = '';
+        if (st === 'assigned' || st === 'pending' || st === 'processing' || st === 'shipped') btns = '<button class="btn" onclick="setStatus(\'' + o.id + '\',\'picked_up\')">Picked up</button>';
+        else if (st === 'picked_up') btns = '<button class="btn" onclick="setStatus(\'' + o.id + '\',\'out_for_delivery\')">Out for delivery</button>';
+        else if (st === 'out_for_delivery') btns = '<button class="btn" onclick="setStatus(\'' + o.id + '\',\'delivered\')">Mark delivered</button>';
+        return '<div class="task-card"><div class="task-title">' + (o.products && o.products.title ? o.products.title : 'Order') + '</div><div class="task-meta">' + (o.customer_name || '—') + ' · ' + (o.customer_phone || '') + '</div><div class="task-meta">' + (o.delivery_address || '—') + '</div>' + btns + '</div>';
+      }).join('');
 
-      const hist = document.getElementById('historyBody');
-      if (!delivered.length) hist.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#bbb;padding:30px;">No completed deliveries</td></tr>';
-      else hist.innerHTML = delivered.map(o => `<tr>
-        <td>${o.products?.title || '—'}</td>
-        <td>${o.customer_name || '—'}</td>
-        <td>${o.delivery_address || '—'}</td>
-        <td><span class="pill pill-delivered">delivered</span></td>
-        <td>${o.created_at ? new Date(o.created_at).toLocaleDateString() : '—'}</td>
-      </tr>`).join('');
+      document.getElementById('historyBody').innerHTML = delivered.length ? delivered.map(function (o) {
+        return '<tr><td>' + (o.products && o.products.title ? o.products.title : '—') + '</td><td>' + (o.customer_name || '—') + '</td><td>' + (o.delivery_address || '—') + '</td><td>delivered</td></tr>';
+      }).join('') : '<tr><td colspan="4" class="empty">None yet</td></tr>';
+
+      document.getElementById('commBody').innerHTML = myOrders.length ? myOrders.map(function (o) {
+        var st = o.delivery_payout_status || 'due';
+        var btn = st === 'due' ? '<button class="pay-btn" onclick="confirmComm(\'' + o.id + '\')">Confirm received</button>' : (st === 'confirmed' ? 'Waiting admin' : 'Paid');
+        return '<tr><td>' + (o.products && o.products.title ? o.products.title : '—') + '</td><td>Rs. ' + (parseFloat(o.selling_price) || 0).toLocaleString() + '</td><td style="color:#ff7a1a;font-weight:700;">Rs. ' + (parseFloat(o.delivery_commission_amount) || 0).toLocaleString() + '</td><td><span class="pill pill-' + st + '">' + st.replace(/_/g, ' ') + '</span></td><td>' + btn + '</td></tr>';
+      }).join('') : '<tr><td colspan="5" class="empty">No assigned sales yet</td></tr>';
     }
 
     async function setStatus(id, order_status) {
-      const { error } = await supabaseClient.from('orders').update({ order_status }).eq('id', id).eq('delivery_id', currentUser.id);
-      if (error) alert(error.message);
-      else await loadOrders();
+      var { error } = await supabaseClient.from('orders').update({ order_status: order_status }).eq('id', id).eq('delivery_id', currentUser.id);
+      if (error) alert(error.message); else await loadOrders();
     }
-
-    function showSection(section, el) {
-      document.getElementById('section-active').style.display = section === 'active' ? 'block' : 'none';
-      document.getElementById('section-history').style.display = section === 'history' ? 'block' : 'none';
-      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    async function confirmComm(id) {
+      var { error } = await supabaseClient.from('orders').update({ delivery_payout_status: 'confirmed' }).eq('id', id).eq('delivery_id', currentUser.id);
+      if (error) alert(error.message); else await loadOrders();
+    }
+    function showSection(s, el) {
+      document.getElementById('section-active').style.display = s === 'active' ? 'block' : 'none';
+      document.getElementById('section-commission').style.display = s === 'commission' ? 'block' : 'none';
+      document.getElementById('section-history').style.display = s === 'history' ? 'block' : 'none';
+      document.querySelectorAll('.nav-item').forEach(function (i) { i.classList.remove('active'); });
       el.classList.add('active');
-      document.getElementById('pageTitle').textContent = section === 'active' ? 'Active Deliveries' : 'History';
-      document.getElementById('pageSubtitle').textContent = section === 'active' ? 'Orders assigned to you' : 'Completed deliveries';
     }
-
-    async function handleLogout() {
-      await supabaseClient.auth.signOut();
-      window.location.href = '../index.html';
-    }
-
+    async function handleLogout() { await supabaseClient.auth.signOut(); window.location.href = '../index.html'; }
     checkAuth();
   </script>
 </body>
