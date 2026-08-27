@@ -417,14 +417,67 @@
       var extra = { payment_status: status };
       if (status === 'paid_confirmed') extra.vendor_confirmed = true;
       if (status === 'due') extra.vendor_confirmed = false;
+      
       var { error } = await supabaseClient.from('orders').update(extra).eq('id', id);
-      if (error) showToast(error.message); else { showToast('Updated'); await loadOrders(); }
+      if (error) {
+        showToast(error.message);
+      } else {
+        showToast('Updated');
+        
+        // Notify the vendor about the payment action
+        var ord = allOrders.find(function (o) { return o.id === id; });
+        if (ord && ord.vendor_id) {
+          let title = "Payment Status Updated";
+          let msg = "Your order payment status was updated to " + status.replace(/_/g, ' ');
+          if (status === 'paid_confirmed') {
+            title = "Payment Confirmed";
+            msg = "Admin has confirmed your payout of " + rs(ord.vendor_amount) + " for product: " + (ord.products?.title || 'product');
+          } else if (status === 'overdue') {
+            title = "Payment Overdue";
+            msg = "Admin marked your payout of " + rs(ord.vendor_amount) + " as OVERDUE.";
+          }
+          await supabaseClient.from('notifications').insert({
+            user_id: ord.vendor_id,
+            title: title,
+            message: msg
+          });
+        }
+        await loadOrders();
+      }
     }
+
     async function setStaffPay(id, col) {
       var patch = {};
       patch[col] = 'paid_confirmed';
       var { error } = await supabaseClient.from('orders').update(patch).eq('id', id);
-      if (error) showToast(error.message); else { showToast('Marked paid'); await loadOrders(); }
+      if (error) {
+        showToast(error.message);
+      } else {
+        showToast('Marked paid');
+        
+        // Send notification to worker or delivery
+        var ord = allOrders.find(function (o) { return o.id === id; });
+        if (ord) {
+          let targetUserId = null;
+          let title = "Commission Paid";
+          let msg = "";
+          if (col === 'worker_payout_status' && ord.worker_id) {
+            targetUserId = ord.worker_id;
+            msg = "Admin paid your commission of " + rs(ord.worker_commission_amount) + " for editing " + (ord.products?.title || 'product') + ".";
+          } else if (col === 'delivery_payout_status' && ord.delivery_id) {
+            targetUserId = ord.delivery_id;
+            msg = "Admin paid your delivery commission of " + rs(ord.delivery_commission_amount) + " for " + (ord.products?.title || 'product') + ".";
+          }
+          if (targetUserId) {
+            await supabaseClient.from('notifications').insert({
+              user_id: targetUserId,
+              title: title,
+              message: msg
+            });
+          }
+        }
+        await loadOrders();
+      }
     }
 
     function openAddModal() { document.getElementById('addMsg').className = 'msg'; document.getElementById('addModal').classList.add('show'); }
