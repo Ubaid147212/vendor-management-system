@@ -39,8 +39,9 @@
     .task-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
     .task-meta { font-size: 12px; color: #aaa; margin-bottom: 12px; }
     .task-actions { display: flex; gap: 8px; }
-    .download-btn { flex: 1; padding: 10px; background: #f5f5f7; border: 1.5px solid #e8e8e8; border-radius: 8px; font-size: 12.5px; font-weight: 600; color: #555; text-decoration: none; text-align: center; }
-    .upload-edit-btn { flex: 1; padding: 10px; background: linear-gradient(135deg, #ff7a1a, #ff9d4d); border: none; border-radius: 8px; font-size: 12.5px; font-weight: 600; color: white; cursor: pointer; }
+    .download-btn, .upload-edit-btn { flex: 1; padding: 10px; border-radius: 8px; font-size: 12.5px; font-weight: 600; cursor: pointer; border: none; }
+    .download-btn { background: #f5f5f7; border: 1.5px solid #e8e8e8; color: #555; }
+    .upload-edit-btn { background: linear-gradient(135deg, #ff7a1a, #ff9d4d); color: white; }
     .panel { background: white; border-radius: 14px; padding: 22px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); border: 1px solid #f0f0f0; }
     table { width: 100%; border-collapse: collapse; }
     th { text-align: left; padding: 12px; font-size: 11px; color: #aaa; text-transform: uppercase; border-bottom: 1.5px solid #f0f0f0; }
@@ -53,10 +54,14 @@
     .empty { text-align: center; padding: 40px; color: #bbb; }
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; align-items: center; justify-content: center; }
     .modal-overlay.show { display: flex; }
-    .modal { background: white; border-radius: 16px; padding: 28px; width: 420px; }
-    .upload-area { border: 2px dashed #e0e0e0; border-radius: 10px; padding: 30px; text-align: center; position: relative; margin: 16px 0; }
-    .upload-area input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .modal { background: white; border-radius: 16px; padding: 28px; width: 420px; max-width: 95%; }
+    .file-label { display: block; padding: 14px; background: #fff4ee; border: 2px dashed #ff7a1a; border-radius: 10px; text-align: center; font-weight: 600; color: #ff7a1a; cursor: pointer; margin: 12px 0; }
+    .preview { max-width: 100%; max-height: 160px; border-radius: 8px; display: none; margin: 8px auto; }
+    .msg { display: none; padding: 10px; border-radius: 8px; font-size: 13px; margin-bottom: 10px; }
+    .msg.err { display: block; background: #fff0f0; color: #cc3333; }
+    .msg.ok { display: block; background: #f0fdf6; color: #1a7a45; }
     .submit-btn { width: 100%; padding: 13px; background: linear-gradient(135deg, #ff7a1a, #ff9d4d); color: white; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; }
+    .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
   </style>
 </head>
 <body>
@@ -82,7 +87,7 @@
   <div class="main">
     <div class="page-title">
       <h1 id="pageTitle">My Tasks</h1>
-      <p id="pageSubtitle">Products assigned to you for editing</p>
+      <p id="pageSubtitle">Use Download to save the photo, then Upload Edited when done. No extra alarms.</p>
     </div>
     <div class="stats-grid">
       <div class="stat-card"><div class="stat-value" id="stat-assigned">—</div><div class="stat-label">Assigned tasks</div></div>
@@ -94,38 +99,42 @@
       <div class="tasks-grid" id="tasksGrid"><p class="empty">Loading...</p></div>
     </div>
     <div id="section-commission" class="panel" style="display:none;">
-      <p style="font-size:13px;color:#888;margin-bottom:14px;">After a product <b>sells</b>, your money shows here. Click Confirm when you got paid. No time-limit alarms.</p>
+      <p style="font-size:13px;color:#888;margin-bottom:14px;">This table fills <b>after a product sells</b> (admin adds an Order). Editing a photo alone does not add money.</p>
       <table>
         <thead><tr><th>Product</th><th>Sale price</th><th>Your commission</th><th>Status</th><th></th></tr></thead>
-        <tbody id="commBody"><tr><td colspan="5" class="empty">Loading...</td></tr></tbody>
+        <tbody id="commBody"></tbody>
       </table>
     </div>
     <div id="section-history" class="panel" style="display:none;">
       <table>
         <thead><tr><th>Product</th><th>Vendor</th><th>Edited at</th><th>Status</th></tr></thead>
-        <tbody id="historyBody"><tr><td colspan="4" class="empty">Loading...</td></tr></tbody>
+        <tbody id="historyBody"></tbody>
       </table>
     </div>
   </div>
+
   <div class="modal-overlay" id="uploadModal">
     <div class="modal">
-      <h3>Upload Edited Image</h3>
+      <h3>Upload edited image</h3>
       <p id="modalProductName" style="margin:10px 0;color:#888;"></p>
-      <div class="upload-area">
-        <input type="file" id="editedImageFile" accept="image/*">
-        <p>Click to upload edited image</p>
-      </div>
-      <button class="submit-btn" onclick="submitEditedImage()">Mark as Done & Submit</button>
+      <div class="msg" id="upMsg"></div>
+      <label class="file-label">
+        Click here to choose the new photo
+        <input type="file" id="editedImageFile" accept="image/*" style="display:none" onchange="previewFile()">
+      </label>
+      <img class="preview" id="editPreview" alt="preview">
+      <button class="submit-btn" id="submitEditBtn" onclick="submitEditedImage()">Mark as Done & Submit</button>
       <button class="logout-btn" onclick="closeUploadModal()">Cancel</button>
     </div>
   </div>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const SUPABASE_URL = 'https://faqysbhbqwpndinyxzrh.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZhcXlzYmhicXdwbmRpbnl4enJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODczMjAzMzQsImV4cCI6MjEwMjg5NjMzNH0.mMoxhImEeg7BVDVgPogClkelxmAqlhi51BksrjAso7k';
     const { createClient } = supabase;
     const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    let currentUser = null, myTasks = [], allHistory = [], myComms = [], selectedProductId = null;
+    let currentUser = null, myTasks = [], selectedProductId = null;
 
     async function checkAuth() {
       const { data: { session } } = await supabaseClient.auth.getSession();
@@ -145,17 +154,38 @@
       document.getElementById('stat-assigned').textContent = myTasks.length;
       const grid = document.getElementById('tasksGrid');
       if (!myTasks.length) { grid.innerHTML = '<p class="empty">No pending tasks.</p>'; return; }
-      grid.innerHTML = myTasks.map(function (p) {
-        return '<div class="task-card"><div class="task-image">' + (p.image_url ? '<img src="' + p.image_url + '">' : '') + '</div><div class="task-info"><div class="task-title">' + p.title + '</div><div class="task-meta">Vendor: ' + (p.vendor && p.vendor.full_name ? p.vendor.full_name : '—') + '</div><div class="task-actions"><a class="download-btn" href="' + (p.image_url || '#') + '" target="_blank">Download</a><button class="upload-edit-btn" onclick="openUploadModal(\'' + p.id + '\')">Upload Edited</button></div></div></div>';
+      grid.innerHTML = myTasks.map(function (p, i) {
+        return '<div class="task-card"><div class="task-image">' + (p.image_url ? '<img src="' + p.image_url + '">' : '') + '</div><div class="task-info"><div class="task-title">' + (p.title || '') + '</div><div class="task-meta">Vendor: ' + (p.vendor && p.vendor.full_name ? p.vendor.full_name : '—') + '</div><div class="task-actions"><button class="download-btn" type="button" onclick="downloadImage(' + i + ')">Download</button><button class="upload-edit-btn" type="button" onclick="openUploadModal(' + i + ')">Upload Edited</button></div></div></div>';
       }).join('');
+    }
+
+    async function downloadImage(i) {
+      var p = myTasks[i];
+      if (!p || !p.image_url) { alert('No image on this product.'); return; }
+      var name = (p.title || 'product').replace(/[\\/:*?"<>|]/g, '_') + '.jpg';
+      try {
+        var res = await fetch(p.image_url);
+        if (!res.ok) throw new Error('fetch failed');
+        var blob = await res.blob();
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = name;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+      } catch (e) {
+        alert('Auto-download blocked. A new tab will open — right-click the photo → Save image as.');
+        window.open(p.image_url, '_blank');
+      }
     }
 
     async function loadHistory() {
       const { data } = await supabaseClient.from('products').select('*, vendor:vendor_id(full_name)')
         .eq('worker_id', currentUser.id).in('status', ['edited', 'published', 'Published']).order('edited_at', { ascending: false });
-      allHistory = data || [];
+      var allHistory = data || [];
       document.getElementById('stat-done').textContent = allHistory.length;
-      const tbody = document.getElementById('historyBody');
+      var tbody = document.getElementById('historyBody');
       if (!allHistory.length) { tbody.innerHTML = '<tr><td colspan="4" class="empty">No completed tasks</td></tr>'; return; }
       tbody.innerHTML = allHistory.map(function (p) {
         return '<tr><td>' + p.title + '</td><td>' + (p.vendor && p.vendor.full_name ? p.vendor.full_name : '—') + '</td><td>' + (p.edited_at ? new Date(p.edited_at).toLocaleString() : '—') + '</td><td>' + p.status + '</td></tr>';
@@ -165,17 +195,17 @@
     async function loadCommission() {
       const { data, error } = await supabaseClient.from('orders').select('*, products(title)').eq('worker_id', currentUser.id).order('created_at', { ascending: false });
       if (error) { document.getElementById('commBody').innerHTML = '<tr><td colspan="5" class="empty">' + error.message + '</td></tr>'; return; }
-      myComms = data || [];
+      var myComms = data || [];
       function money(arr) { return arr.reduce(function (s, o) { return s + (parseFloat(o.worker_commission_amount) || 0); }, 0); }
       var due = myComms.filter(function (o) { return o.worker_payout_status === 'due' || o.worker_payout_status === 'confirmed'; });
       var paid = myComms.filter(function (o) { return o.worker_payout_status === 'paid_confirmed'; });
       document.getElementById('stat-due').textContent = 'Rs. ' + money(due).toLocaleString();
       document.getElementById('stat-paid').textContent = 'Rs. ' + money(paid).toLocaleString();
       var tbody = document.getElementById('commBody');
-      if (!myComms.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty">No sales on your edited products yet</td></tr>'; return; }
+      if (!myComms.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty">No sales yet. Admin must Add Order after the product sells.</td></tr>'; return; }
       tbody.innerHTML = myComms.map(function (o) {
         var st = o.worker_payout_status || 'due';
-        var btn = st === 'due' ? '<button class="pay-btn" onclick="confirmComm(\'' + o.id + '\')">Confirm received</button>' : (st === 'confirmed' ? '<span style="color:#3366ff;font-size:12px;">Waiting admin</span>' : '<span style="color:#00a85a;font-size:12px;">Paid</span>');
+        var btn = st === 'due' ? '<button class="pay-btn" onclick="confirmComm(\'' + o.id + '\')">Confirm received</button>' : (st === 'confirmed' ? 'Waiting admin' : 'Paid');
         return '<tr><td>' + (o.products && o.products.title ? o.products.title : '—') + '</td><td>Rs. ' + (parseFloat(o.selling_price) || 0).toLocaleString() + '</td><td style="font-weight:700;color:#ff7a1a;">Rs. ' + (parseFloat(o.worker_commission_amount) || 0).toLocaleString() + '</td><td><span class="pill pill-' + st + '">' + st.replace(/_/g, ' ') + '</span></td><td>' + btn + '</td></tr>';
       }).join('');
     }
@@ -191,30 +221,59 @@
       document.getElementById('section-history').style.display = s === 'history' ? 'block' : 'none';
       document.querySelectorAll('.nav-item').forEach(function (i) { i.classList.remove('active'); });
       el.classList.add('active');
-      var titles = { tasks: ['My Tasks', 'Products assigned to you'], commission: ['My Commission', 'Money after products sell'], history: ['History', 'Completed edits'] };
-      document.getElementById('pageTitle').textContent = titles[s][0];
-      document.getElementById('pageSubtitle').textContent = titles[s][1];
     }
 
-    function openUploadModal(id) {
-      selectedProductId = id;
-      document.getElementById('modalProductName').textContent = 'Upload edited photo';
+    function openUploadModal(i) {
+      var p = myTasks[i];
+      if (!p) return;
+      selectedProductId = p.id;
+      document.getElementById('modalProductName').textContent = p.title || '';
+      document.getElementById('upMsg').className = 'msg';
+      document.getElementById('editedImageFile').value = '';
+      document.getElementById('editPreview').style.display = 'none';
       document.getElementById('uploadModal').classList.add('show');
     }
     function closeUploadModal() { document.getElementById('uploadModal').classList.remove('show'); }
 
-    async function submitEditedImage() {
+    function previewFile() {
       var file = document.getElementById('editedImageFile').files[0];
-      if (!file) { alert('Please select an image first.'); return; }
-      var fileName = 'edited/' + currentUser.id + '/' + Date.now() + '_' + file.name;
-      var up = await supabaseClient.storage.from('products').upload(fileName, file);
-      if (up.error) { alert(up.error.message); return; }
-      var { data: { publicUrl } } = supabaseClient.storage.from('products').getPublicUrl(fileName);
-      var { error } = await supabaseClient.from('products').update({
-        edited_image_url: publicUrl, status: 'published', edited_at: new Date().toISOString()
-      }).eq('id', selectedProductId);
-      if (error) alert(error.message);
-      else { closeUploadModal(); await loadTasks(); await loadHistory(); }
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        var img = document.getElementById('editPreview');
+        img.src = e.target.result;
+        img.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function submitEditedImage() {
+      var msg = document.getElementById('upMsg');
+      var file = document.getElementById('editedImageFile').files[0];
+      var btn = document.getElementById('submitEditBtn');
+      msg.className = 'msg';
+      if (!file) { msg.className = 'msg err'; msg.textContent = 'Please choose a photo first (orange box).'; return; }
+      if (!selectedProductId) { msg.className = 'msg err'; msg.textContent = 'No product selected. Close and try again.'; return; }
+      btn.disabled = true;
+      btn.textContent = 'Uploading...';
+      try {
+        var fileName = 'edited/' + currentUser.id + '/' + Date.now() + '_' + file.name.replace(/[^\w.\-]/g, '_');
+        var up = await supabaseClient.storage.from('products').upload(fileName, file);
+        if (up.error) throw new Error(up.error.message);
+        var { data: { publicUrl } } = supabaseClient.storage.from('products').getPublicUrl(fileName);
+        var { error } = await supabaseClient.from('products').update({
+          edited_image_url: publicUrl, status: 'published', edited_at: new Date().toISOString()
+        }).eq('id', selectedProductId);
+        if (error) throw new Error(error.message);
+        msg.className = 'msg ok';
+        msg.textContent = 'Saved. Product is published.';
+        setTimeout(function () { closeUploadModal(); loadTasks(); loadHistory(); }, 900);
+      } catch (e) {
+        msg.className = 'msg err';
+        msg.textContent = e.message || 'Upload failed';
+      }
+      btn.disabled = false;
+      btn.textContent = 'Mark as Done & Submit';
     }
 
     async function handleLogout() { await supabaseClient.auth.signOut(); window.location.href = '../index.html'; }
