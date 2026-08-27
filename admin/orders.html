@@ -524,6 +524,11 @@
         await loadOrders();
       }
     }
+    async function setStaffPay(id, col) {
+      const { error } = await supabaseClient.from('orders').update({ [col]: 'paid_confirmed' }).eq('id', id);
+      if (error) showToast('❌ ' + error.message, 'error');
+      else { showToast('✅ Staff marked paid', 'success'); await loadOrders(); }
+    }
 
     function openAddModal() {
       document.getElementById('addMsg').className = 'msg';
