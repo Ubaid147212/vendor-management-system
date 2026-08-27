@@ -6,258 +6,83 @@
   <title>Manage Users — VendorPro</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-
-    body {
-      background: #0d0d0f;
-      color: white;
-      min-height: 100vh;
-      display: flex;
-    }
-
-    .sidebar {
-      width: 260px;
-      background: #121214;
-      border-right: 1px solid rgba(255,255,255,0.06);
-      display: flex;
-      flex-direction: column;
-      padding: 24px 0;
-      position: fixed;
-      height: 100vh;
-    }
-
-    .sidebar-logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 0 24px;
-      margin-bottom: 32px;
-    }
-
-    .logo-mark {
-      width: 36px;
-      height: 36px;
-      background: linear-gradient(135deg, #ff7a1a, #ff9d4d);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
+    body { background: #0d0d0f; color: white; min-height: 100vh; display: flex; }
+    .sidebar { width: 260px; background: #121214; border-right: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; padding: 24px 0; position: fixed; height: 100vh; overflow-y: auto; }
+    .sidebar-logo { display: flex; align-items: center; gap: 12px; padding: 0 24px; margin-bottom: 32px; }
+    .logo-mark { width: 36px; height: 36px; background: linear-gradient(135deg, #ff7a1a, #ff9d4d); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
     .logo-mark svg { width: 18px; height: 18px; fill: white; }
     .logo-text { font-size: 16px; font-weight: 700; }
-
     .nav-section { padding: 0 16px; margin-bottom: 24px; }
-    .nav-label {
-      font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.25);
-      text-transform: uppercase; letter-spacing: 1px; padding: 0 12px; margin-bottom: 10px;
-    }
-
-    .nav-item {
-      display: flex; align-items: center; gap: 12px; padding: 11px 12px;
-      border-radius: 10px; color: rgba(255,255,255,0.55); text-decoration: none;
-      font-size: 13.5px; font-weight: 500; margin-bottom: 2px; cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .nav-item svg { width: 17px; height: 17px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .nav-label { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.25); text-transform: uppercase; letter-spacing: 1px; padding: 0 12px; margin-bottom: 10px; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 10px; color: rgba(255,255,255,0.55); text-decoration: none; font-size: 13.5px; font-weight: 500; margin-bottom: 2px; }
     .nav-item:hover { background: rgba(255,255,255,0.04); color: white; }
     .nav-item.active { background: rgba(255,122,26,0.1); color: #ff9d4d; }
-
-    .sidebar-footer {
-      margin-top: auto; padding: 16px 24px 0; border-top: 1px solid rgba(255,255,255,0.06);
-    }
-
+    .sidebar-footer { margin-top: auto; padding: 16px 24px 0; border-top: 1px solid rgba(255,255,255,0.06); }
     .user-box { display: flex; align-items: center; gap: 10px; padding: 10px 0; }
-    .user-avatar {
-      width: 36px; height: 36px; border-radius: 50%;
-      background: linear-gradient(135deg, #ff7a1a, #ff9d4d);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 700;
-    }
-
+    .user-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #ff7a1a, #ff9d4d); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
     .user-info h4 { font-size: 13px; font-weight: 600; }
     .user-info p { font-size: 11px; color: rgba(255,255,255,0.35); }
-
-    .logout-btn {
-      width: 100%; padding: 9px; background: rgba(255,70,70,0.08);
-      border: 1px solid rgba(255,70,70,0.2); color: #ff8080; border-radius: 8px;
-      font-size: 12.5px; font-weight: 600; cursor: pointer; margin-top: 10px;
-    }
-
+    .logout-btn { width: 100%; padding: 9px; background: rgba(255,70,70,0.08); border: 1px solid rgba(255,70,70,0.2); color: #ff8080; border-radius: 8px; font-size: 12.5px; font-weight: 600; cursor: pointer; margin-top: 10px; }
     .main { margin-left: 260px; flex: 1; padding: 32px 40px; }
-
-    .topbar {
-      display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;
-    }
-
+    .topbar { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 22px; gap: 16px; }
     .page-title h1 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
     .page-title p { font-size: 13px; color: rgba(255,255,255,0.35); }
-
-    .add-btn {
-      padding: 12px 20px; background: #ff7a1a; color: white; border: none;
-      border-radius: 10px; font-size: 13.5px; font-weight: 600; cursor: pointer;
-      display: flex; align-items: center; gap: 8px;
-    }
-
-    .add-btn:hover { background: #ff8c3d; }
-    .add-btn svg { width: 16px; height: 16px; stroke: white; fill: none; stroke-width: 2; }
-
-    /* Tabs */
-    .tabs {
-      display: flex; gap: 8px; margin-bottom: 24px;
-      border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 0;
-    }
-
-    .tab {
-      padding: 10px 18px; font-size: 13px; font-weight: 600;
-      color: rgba(255,255,255,0.4); cursor: pointer; border-bottom: 2px solid transparent;
-    }
-
+    .btn-primary { padding: 10px 16px; background: linear-gradient(135deg, #ff7a1a, #ff9d4d); color: white; border: none; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; }
+    .tabs { display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .tab { padding: 10px 14px; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.4); cursor: pointer; border-bottom: 2px solid transparent; }
     .tab.active { color: #ff9d4d; border-bottom-color: #ff7a1a; }
-
-    /* Table */
-    .table-container {
-      background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
-      border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; overflow: hidden;
-    }
-
-    table { width: 100%; border-collapse: collapse; }
-
-    th {
-      text-align: left; padding: 14px 20px; font-size: 11px; font-weight: 600;
-      color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.5px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-
-    td {
-      padding: 16px 20px; font-size: 13.5px; color: rgba(255,255,255,0.8);
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-    }
-
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: rgba(255,255,255,0.02); }
-
-    .badge {
-      padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;
-    }
-
-    .badge-active { background: rgba(0,220,130,0.1); color: #33dd99; }
-    .badge-offline { background: rgba(255,70,70,0.1); color: #ff6666; }
-
-    .action-btn {
-      padding: 6px 12px; border-radius: 6px; font-size: 11.5px; font-weight: 600;
-      cursor: pointer; border: 1px solid rgba(255,255,255,0.1); background: transparent;
-      color: rgba(255,255,255,0.6); margin-right: 6px;
-    }
-
-    .action-btn:hover { background: rgba(255,255,255,0.05); color: white; }
-
-    .empty-row td {
-      text-align: center; padding: 50px 20px; color: rgba(255,255,255,0.25);
-    }
-
-    /* Modal */
-    .modal-overlay {
-      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.7); z-index: 100; align-items: center; justify-content: center;
-    }
-
-    .modal-overlay.show { display: flex; }
-
-    .modal {
-      background: #16161a; border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px; padding: 32px; width: 440px; max-width: 90vw;
-    }
-
-    .modal-header {
-      display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;
-    }
-
-    .modal-header h3 { font-size: 18px; font-weight: 700; }
-
-    .close-btn {
-      width: 28px; height: 28px; border-radius: 8px; background: rgba(255,255,255,0.05);
-      border: none; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 16px;
-    }
-
-    .form-group { margin-bottom: 16px; }
-
-    .form-group label {
-      display: block; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.5);
-      margin-bottom: 6px;
-    }
-
-    .form-group input, .form-group select {
-      width: 100%; padding: 11px 14px; background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; font-size: 13.5px;
-    }
-
-    .form-group input:focus, .form-group select:focus {
-      outline: none; border-color: rgba(255,122,26,0.5);
-    }
-
-    .commission-group { display: none; }
-    .commission-group.show { display: block; }
-
-    .submit-btn {
-      width: 100%; padding: 13px; background: #ff7a1a; color: white; border: none;
-      border-radius: 10px; font-weight: 600; font-size: 14px; cursor: pointer; margin-top: 8px;
-    }
-
-    .submit-btn:hover { background: #ff8c3d; }
-    .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
-    .msg-box {
-      padding: 10px 14px; border-radius: 8px; font-size: 12.5px; margin-bottom: 14px; display: none;
-    }
-
-    .msg-error { background: rgba(255,70,70,0.1); border: 1px solid rgba(255,70,70,0.2); color: #ff8080; }
-    .msg-success { background: rgba(0,220,130,0.1); border: 1px solid rgba(0,220,130,0.2); color: #33dd99; }
+    .table-wrap { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; overflow: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 800px; }
+    th { text-align: left; padding: 12px 16px; font-size: 11px; color: rgba(255,255,255,0.35); text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    td { padding: 14px 16px; font-size: 13px; color: rgba(255,255,255,0.8); border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .pill-on { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; background: rgba(0,220,130,0.12); color: #33dd99; }
+    .pill-off { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.45); }
+    .mini { padding: 6px 10px; border-radius: 8px; font-size: 11px; font-weight: 600; cursor: pointer; border: 1px solid rgba(255,255,255,0.12); background: transparent; color: rgba(255,255,255,0.7); margin-right: 6px; }
+    .mini.orange { border-color: rgba(255,122,26,0.35); color: #ff9d4d; }
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 50; align-items: center; justify-content: center; padding: 20px; }
+    .overlay.show { display: flex; }
+    .modal { background: #16161a; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 24px; width: 420px; max-width: 100%; }
+    .modal h3 { font-size: 16px; margin-bottom: 16px; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.5); margin-bottom: 6px; }
+    .form-group input, .form-group select { width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; font-size: 13px; }
+    .form-group select option { background: #1a1a1e; }
+    .hint { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 4px; }
+    .err { display: none; padding: 10px; border-radius: 8px; background: rgba(255,70,70,0.1); color: #ff8080; font-size: 12px; margin-bottom: 10px; }
+    .err.show { display: block; }
+    .close { float: right; background: none; border: none; color: #888; font-size: 18px; cursor: pointer; }
+    .toast { position: fixed; bottom: 24px; right: 24px; padding: 12px 16px; background: #1e1e24; border-radius: 10px; display: none; font-size: 13px; }
+    .toast.show { display: block; color: #33dd99; }
   </style>
 </head>
 <body>
-
   <div class="sidebar">
     <div class="sidebar-logo">
-      <div class="logo-mark">
-        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-      </div>
+      <div class="logo-mark"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
       <div class="logo-text">VendorPro</div>
     </div>
-
     <div class="nav-section">
       <div class="nav-label">Overview</div>
-      <a class="nav-item" href="dashboard.html">
-        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-        Dashboard
-      </a>
+      <a class="nav-item" href="dashboard.html">Dashboard</a>
     </div>
-
     <div class="nav-section">
       <div class="nav-label">Management</div>
-      <a class="nav-item active" href="users.html">
-        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        Users
-      </a>
-      <a class="nav-item" href="products.html">
-        <svg viewBox="0 0 24 24"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/></svg>
-        Products
-      </a>
-      <a class="nav-item" href="orders.html">
-        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/></svg>
-        Orders & Commission
-      </a>
+      <a class="nav-item active" href="users.html">Users</a>
+      <a class="nav-item" href="products.html">Products</a>
+      <a class="nav-item" href="orders.html">Orders & Commission</a>
+      <a class="nav-item" href="workers.html">Workers</a>
+      <a class="nav-item" href="delivery.html">Delivery</a>
     </div>
-
+    <div class="nav-section">
+      <div class="nav-label">System</div>
+      <a class="nav-item" href="disputes.html">Disputes</a>
+      <a class="nav-item" href="settings.html">Settings</a>
+    </div>
     <div class="sidebar-footer">
       <div class="user-box">
         <div class="user-avatar" id="userAvatar">A</div>
-        <div class="user-info">
-          <h4 id="userName">Loading...</h4>
-          <p>Administrator</p>
-        </div>
+        <div class="user-info"><h4 id="userName">Loading...</h4><p>Administrator</p></div>
       </div>
       <button class="logout-btn" onclick="handleLogout()">Sign Out</button>
     </div>
@@ -267,266 +92,203 @@
     <div class="topbar">
       <div class="page-title">
         <h1>Manage Users</h1>
-        <p>Add and manage vendors, workers, delivery boys and managers</p>
+        <p>Set commission % for each vendor, worker and delivery boy. Change it anytime with Set %.</p>
       </div>
-      <button class="add-btn" onclick="openModal()">
-        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Add New User
-      </button>
+      <button class="btn-primary" onclick="openAdd()">+ Add New User</button>
     </div>
-
     <div class="tabs">
-      <div class="tab active" data-role="all" onclick="filterRole('all')">All Users</div>
-      <div class="tab" data-role="vendor" onclick="filterRole('vendor')">Vendors</div>
-      <div class="tab" data-role="worker" onclick="filterRole('worker')">Workers</div>
-      <div class="tab" data-role="delivery" onclick="filterRole('delivery')">Delivery</div>
-      <div class="tab" data-role="manager" onclick="filterRole('manager')">Managers</div>
+      <div class="tab active" onclick="filterRole('all', this)">All Users</div>
+      <div class="tab" onclick="filterRole('vendor', this)">Vendors</div>
+      <div class="tab" onclick="filterRole('worker', this)">Workers</div>
+      <div class="tab" onclick="filterRole('delivery', this)">Delivery</div>
+      <div class="tab" onclick="filterRole('manager', this)">Managers</div>
     </div>
-
-    <div class="table-container">
+    <div class="table-wrap">
       <table>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Phone</th>
-            <th>Role</th>
-            <th>Commission</th>
-            <th>Status</th>
-            <th>Actions</th>
+            <th>Name</th><th>Phone</th><th>Role</th><th>Commission</th><th>Status</th><th>Actions</th>
           </tr>
         </thead>
-        <tbody id="usersTableBody">
-          <tr class="empty-row"><td colspan="6">Loading users...</td></tr>
-        </tbody>
+        <tbody id="tbody"><tr><td colspan="6" style="text-align:center;padding:40px;color:#666;">Loading...</td></tr></tbody>
       </table>
     </div>
   </div>
 
-  <!-- ADD USER MODAL -->
-  <div class="modal-overlay" id="modalOverlay">
+  <div class="overlay" id="addModal">
     <div class="modal">
-      <div class="modal-header">
-        <h3>Add New User</h3>
-        <button class="close-btn" onclick="closeModal()">✕</button>
-      </div>
-
-      <div class="msg-box msg-error" id="modalError"></div>
-      <div class="msg-box msg-success" id="modalSuccess"></div>
-
-      <div class="form-group">
-        <label>Full Name</label>
-        <input type="text" id="newFullName" placeholder="e.g. Ali Hassan">
-      </div>
-
-      <div class="form-group">
-        <label>Phone Number</label>
-        <input type="text" id="newPhone" placeholder="03XX-XXXXXXX">
-      </div>
-
-      <div class="form-group">
-        <label>Email Address</label>
-        <input type="email" id="newEmail" placeholder="user@example.com">
-      </div>
-
-      <div class="form-group">
-        <label>Password</label>
-        <input type="text" id="newPassword" placeholder="Set a password for this user">
-      </div>
-
+      <button class="close" onclick="closeAdd()">✕</button>
+      <h3>Add New User</h3>
+      <div class="err" id="addErr"></div>
+      <div class="form-group"><label>Full Name</label><input id="addName" placeholder="e.g. Ali Hassan"></div>
+      <div class="form-group"><label>Phone Number</label><input id="addPhone" placeholder="03XX-XXXXXXX"></div>
+      <div class="form-group"><label>Email Address</label><input id="addEmail" type="email" placeholder="user@example.com"></div>
+      <div class="form-group"><label>Password</label><input id="addPass" type="password" placeholder="Set a password"></div>
       <div class="form-group">
         <label>Role</label>
-        <select id="newRole" onchange="toggleCommissionField()">
+        <select id="addRole">
           <option value="">Select Role</option>
           <option value="vendor">Vendor</option>
           <option value="worker">Worker</option>
-          <option value="delivery">Delivery Boy</option>
+          <option value="delivery">Delivery</option>
           <option value="manager">Manager</option>
         </select>
       </div>
-
-      <div class="form-group commission-group" id="commissionGroup">
-        <label>Commission Percentage (%)</label>
-        <input type="number" id="newCommission" placeholder="e.g. 20" min="0" max="100">
+      <div class="form-group">
+        <label>Commission %</label>
+        <input id="addComm" type="number" min="0" max="100" step="0.01" placeholder="e.g. 5">
+        <div class="hint">Vendor = your cut from their sale. Worker / delivery = their pay after that product sells. You can change this later with Set %.</div>
       </div>
-
-      <button class="submit-btn" id="submitBtn" onclick="handleCreateUser()">Create Account</button>
+      <button class="btn-primary" style="width:100%;margin-top:8px;" onclick="createUser()">Create Account</button>
     </div>
   </div>
+
+  <div class="overlay" id="pctModal">
+    <div class="modal">
+      <button class="close" onclick="closePct()">✕</button>
+      <h3>Set commission %</h3>
+      <p id="pctName" style="font-size:13px;color:#888;margin-bottom:12px;"></p>
+      <div class="err" id="pctErr"></div>
+      <div class="form-group">
+        <label>Commission %</label>
+        <input id="pctVal" type="number" min="0" max="100" step="0.01">
+      </div>
+      <button class="btn-primary" style="width:100%;" onclick="savePct()">Save</button>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const SUPABASE_URL = 'https://faqysbhbqwpndinyxzrh.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZhcXlzYmhicXdwbmRpbnl4enJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODczMjAzMzQsImV4cCI6MjEwMjg5NjMzNH0.mMoxhImEeg7BVDVgPogClkelxmAqlhi51BksrjAso7k';
-
     const { createClient } = supabase;
     const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    let allUsers = [];
-    let currentFilter = 'all';
+    let allUsers = [], roleFilter = 'all', pctUserId = null, adminSession = null;
 
     async function checkAuth() {
       const { data: { session } } = await supabaseClient.auth.getSession();
       if (!session) { window.location.href = '../index.html'; return; }
-
-      const { data: profile } = await supabaseClient
-        .from('profiles').select('*').eq('id', session.user.id).single();
-
-      if (!profile || profile.role !== 'admin') {
-        alert('Access denied.');
-        window.location.href = '../index.html';
-        return;
-      }
-
+      adminSession = session;
+      const { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', session.user.id).single();
+      if (!profile || profile.role !== 'admin') { alert('Access denied.'); window.location.href = '../index.html'; return; }
       document.getElementById('userName').textContent = profile.full_name;
       document.getElementById('userAvatar').textContent = profile.full_name.charAt(0).toUpperCase();
-
-      loadUsers();
+      await loadUsers();
     }
 
     async function loadUsers() {
-      const { data, error } = await supabaseClient
-        .from('profiles')
-        .select('*')
-        .neq('role', 'admin')
-        .order('created_at', { ascending: false });
-
-      allUsers = data || [];
-      renderUsers();
+      const { data, error } = await supabaseClient.from('profiles').select('*').order('full_name');
+      if (error) { document.getElementById('tbody').innerHTML = '<tr><td colspan="6" style="padding:40px;text-align:center;color:#f88;">' + error.message + '</td></tr>'; return; }
+      allUsers = (data || []).filter(function (u) { return u.role !== 'admin'; });
+      render();
     }
 
-    function renderUsers() {
-      const tbody = document.getElementById('usersTableBody');
-      const filtered = currentFilter === 'all' ? allUsers : allUsers.filter(u => u.role === currentFilter);
-
-      if (filtered.length === 0) {
-        tbody.innerHTML = `<tr class="empty-row"><td colspan="6">No users found</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = filtered.map(user => `
-        <tr>
-          <td>${user.full_name}</td>
-          <td>${user.phone || '—'}</td>
-          <td style="text-transform: capitalize;">${user.role}</td>
-          <td>${user.role === 'vendor' ? user.commission_percent + '%' : '—'}</td>
-          <td><span class="badge ${user.is_online ? 'badge-active' : 'badge-offline'}">${user.is_online ? 'Active' : 'Offline'}</span></td>
-          <td>
-            <button class="action-btn" onclick="toggleStatus('${user.id}', ${user.is_online})">
-              ${user.is_online ? 'Set Offline' : 'Set Online'}
-            </button>
-          </td>
-        </tr>
-      `).join('');
+    function filterRole(role, el) {
+      roleFilter = role;
+      document.querySelectorAll('.tab').forEach(function (t) { t.classList.remove('active'); });
+      el.classList.add('active');
+      render();
     }
 
-    function filterRole(role) {
-      currentFilter = role;
-      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-      document.querySelector(`[data-role="${role}"]`).classList.add('active');
-      renderUsers();
+    function commText(u) {
+      if (u.commission_percent === null || u.commission_percent === undefined || u.commission_percent === '') return '—';
+      return u.commission_percent + '%';
     }
 
-    async function toggleStatus(userId, currentStatus) {
-      await supabaseClient
-        .from('profiles')
-        .update({ is_online: !currentStatus })
-        .eq('id', userId);
-      loadUsers();
+    function render() {
+      var rows = roleFilter === 'all' ? allUsers : allUsers.filter(function (u) { return u.role === roleFilter; });
+      var tbody = document.getElementById('tbody');
+      if (!rows.length) { tbody.innerHTML = '<tr><td colspan="6" style="padding:40px;text-align:center;color:#666;">No users</td></tr>'; return; }
+      tbody.innerHTML = rows.map(function (u) {
+        var on = u.is_online !== false;
+        return '<tr>' +
+          '<td>' + (u.full_name || '—') + '</td>' +
+          '<td>' + (u.phone || '—') + '</td>' +
+          '<td>' + (u.role || '—') + '</td>' +
+          '<td>' + commText(u) + '</td>' +
+          '<td><span class="' + (on ? 'pill-on' : 'pill-off') + '">' + (on ? 'Active' : 'Offline') + '</span></td>' +
+          '<td>' +
+            '<button class="mini orange" onclick="openPct(\'' + u.id + '\')">Set %</button>' +
+            '<button class="mini" onclick="toggleOnline(\'' + u.id + '\',' + (on ? 'false' : 'true') + ')">' + (on ? 'Set Offline' : 'Set Online') + '</button>' +
+          '</td></tr>';
+      }).join('');
     }
 
-    function openModal() {
-      document.getElementById('modalOverlay').classList.add('show');
+    function openAdd() {
+      document.getElementById('addErr').className = 'err';
+      document.getElementById('addName').value = '';
+      document.getElementById('addPhone').value = '';
+      document.getElementById('addEmail').value = '';
+      document.getElementById('addPass').value = '';
+      document.getElementById('addRole').value = '';
+      document.getElementById('addComm').value = '';
+      document.getElementById('addModal').classList.add('show');
+    }
+    function closeAdd() { document.getElementById('addModal').classList.remove('show'); }
+
+    function openPct(id) {
+      var u = allUsers.find(function (x) { return x.id === id; });
+      if (!u) return;
+      pctUserId = id;
+      document.getElementById('pctErr').className = 'err';
+      document.getElementById('pctName').textContent = (u.full_name || '') + ' · ' + (u.role || '');
+      document.getElementById('pctVal').value = u.commission_percent != null ? u.commission_percent : '';
+      document.getElementById('pctModal').classList.add('show');
+    }
+    function closePct() { document.getElementById('pctModal').classList.remove('show'); pctUserId = null; }
+
+    async function savePct() {
+      var val = parseFloat(document.getElementById('pctVal').value);
+      if (isNaN(val) || val < 0) { document.getElementById('pctErr').textContent = 'Enter a number (0 or more).'; document.getElementById('pctErr').className = 'err show'; return; }
+      var { error } = await supabaseClient.from('profiles').update({ commission_percent: val }).eq('id', pctUserId);
+      if (error) { document.getElementById('pctErr').textContent = error.message; document.getElementById('pctErr').className = 'err show'; return; }
+      closePct();
+      toast('Commission saved');
+      await loadUsers();
     }
 
-    function closeModal() {
-      document.getElementById('modalOverlay').classList.remove('show');
-      document.getElementById('newFullName').value = '';
-      document.getElementById('newPhone').value = '';
-      document.getElementById('newEmail').value = '';
-      document.getElementById('newPassword').value = '';
-      document.getElementById('newRole').value = '';
-      document.getElementById('newCommission').value = '';
-      document.getElementById('modalError').style.display = 'none';
-      document.getElementById('modalSuccess').style.display = 'none';
+    async function toggleOnline(id, value) {
+      var { error } = await supabaseClient.from('profiles').update({ is_online: value }).eq('id', id);
+      if (error) toast(error.message); else await loadUsers();
     }
 
-    function toggleCommissionField() {
-      const role = document.getElementById('newRole').value;
-      const commissionGroup = document.getElementById('commissionGroup');
-      if (role === 'vendor') {
-        commissionGroup.classList.add('show');
-      } else {
-        commissionGroup.classList.remove('show');
-      }
+    async function createUser() {
+      var errBox = document.getElementById('addErr');
+      errBox.className = 'err';
+      var name = document.getElementById('addName').value.trim();
+      var phone = document.getElementById('addPhone').value.trim();
+      var email = document.getElementById('addEmail').value.trim();
+      var pass = document.getElementById('addPass').value;
+      var role = document.getElementById('addRole').value;
+      var comm = document.getElementById('addComm').value === '' ? 0 : parseFloat(document.getElementById('addComm').value);
+      if (!name || !email || !pass || !role) { errBox.textContent = 'Name, email, password and role are required.'; errBox.className = 'err show'; return; }
+      if (isNaN(comm) || comm < 0) { errBox.textContent = 'Commission must be a number.'; errBox.className = 'err show'; return; }
+
+      var { data: { session: keep } } = await supabaseClient.auth.getSession();
+      var { data, error } = await supabaseClient.auth.signUp({ email: email, password: pass });
+      if (keep) await supabaseClient.auth.setSession(keep);
+      if (error) { errBox.textContent = error.message; errBox.className = 'err show'; return; }
+      var uid = data.user && data.user.id;
+      if (!uid) { errBox.textContent = 'Account created but no user id. Check email confirmation.'; errBox.className = 'err show'; return; }
+
+      var { error: pErr } = await supabaseClient.from('profiles').update({
+        full_name: name, role: role, phone: phone, commission_percent: comm, is_online: true
+      }).eq('id', uid);
+      if (pErr) { errBox.textContent = 'Login created, but profile failed: ' + pErr.message; errBox.className = 'err show'; return; }
+
+      closeAdd();
+      toast('User created');
+      await loadUsers();
     }
 
-    async function handleCreateUser() {
-      const full_name = document.getElementById('newFullName').value.trim();
-      const phone = document.getElementById('newPhone').value.trim();
-      const email = document.getElementById('newEmail').value.trim();
-      const password = document.getElementById('newPassword').value.trim();
-      const role = document.getElementById('newRole').value;
-      const commission_percent = document.getElementById('newCommission').value || 0;
-
-      const errorBox = document.getElementById('modalError');
-      const successBox = document.getElementById('modalSuccess');
-      const submitBtn = document.getElementById('submitBtn');
-
-      errorBox.style.display = 'none';
-      successBox.style.display = 'none';
-
-      if (!full_name || !email || !password || !role) {
-        errorBox.textContent = 'Please fill all required fields.';
-        errorBox.style.display = 'block';
-        return;
-      }
-
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Creating...';
-
-      try {
-        const { data: { session } } = await supabaseClient.auth.getSession();
-
-        const response = await fetch(`${SUPABASE_URL}/functions/v1/create-user`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${session.access_token}`
-          },
-          body: JSON.stringify({
-            email, password, full_name, phone, role,
-            commission_percent: parseFloat(commission_percent)
-          })
-        });
-
-        const result = await response.json();
-
-        if (!response.ok) {
-          throw new Error(result.error || 'Failed to create user');
-        }
-
-        successBox.textContent = result.message;
-        successBox.style.display = 'block';
-
-        setTimeout(() => {
-          closeModal();
-          loadUsers();
-        }, 1500);
-
-      } catch (err) {
-        errorBox.textContent = err.message;
-        errorBox.style.display = 'block';
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Create Account';
-      }
+    function toast(msg) {
+      var t = document.getElementById('toast');
+      t.textContent = msg; t.className = 'toast show';
+      setTimeout(function () { t.className = 'toast'; }, 2500);
     }
 
-    async function handleLogout() {
-      await supabaseClient.auth.signOut();
-      window.location.href = '../index.html';
-    }
-
+    async function handleLogout() { await supabaseClient.auth.signOut(); window.location.href = '../index.html'; }
     checkAuth();
   </script>
 </body>
