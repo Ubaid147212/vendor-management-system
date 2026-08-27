@@ -21,49 +21,58 @@
     .sidebar-footer { margin-top: auto; padding: 16px 24px 0; border-top: 1px solid rgba(255,255,255,0.06); }
     .user-box { display: flex; align-items: center; gap: 10px; padding: 10px 0; }
     .user-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #ff7a1a, #ff9d4d); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
-    .user-info h4 { font-size: 13px; }
+    .user-info h4 { font-size: 13px; font-weight: 600; }
     .user-info p { font-size: 11px; color: rgba(255,255,255,0.35); }
     .logout-btn { width: 100%; padding: 9px; background: rgba(255,70,70,0.08); border: 1px solid rgba(255,70,70,0.2); color: #ff8080; border-radius: 8px; font-size: 12.5px; font-weight: 600; cursor: pointer; margin-top: 10px; }
     .main { margin-left: 260px; flex: 1; padding: 32px 40px; }
-    .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 12px; }
-    .page-title h1 { font-size: 24px; font-weight: 700; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; gap: 16px; }
+    .page-title h1 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
     .page-title p { font-size: 13px; color: rgba(255,255,255,0.35); }
-    .btn-primary { padding: 10px 16px; background: linear-gradient(135deg, #ff7a1a, #ff9d4d); color: white; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; }
-    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
-    .stat-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 16px; }
-    .stat-value { font-size: 20px; font-weight: 700; }
-    .stat-label { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 4px; }
-    .info-box { margin-bottom: 14px; padding: 12px 14px; background: rgba(255,122,26,0.06); border: 1px solid rgba(255,122,26,0.15); border-radius: 10px; font-size: 12.5px; color: rgba(255,255,255,0.6); }
-    .filters-row { display: flex; gap: 10px; margin-bottom: 12px; }
-    .search-input, .filter-select { padding: 10px 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; font-size: 13px; }
-    .search-input { flex: 1; }
+    .btn-primary { padding: 10px 16px; background: linear-gradient(135deg, #ff7a1a, #ff9d4d); color: white; border: none; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; }
+    .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 22px; }
+    .stat-card { background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 18px; }
+    .stat-value { font-size: 22px; font-weight: 700; margin-bottom: 3px; }
+    .stat-label { font-size: 11.5px; color: rgba(255,255,255,0.4); }
+    .info-box { margin-bottom: 18px; padding: 12px 16px; background: rgba(255,122,26,0.06); border: 1px solid rgba(255,122,26,0.15); border-radius: 10px; font-size: 12.5px; color: rgba(255,255,255,0.6); }
+    .filters-row { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+    .search-input, .filter-select { padding: 10px 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; font-size: 13px; outline: none; }
+    .search-input { flex: 1; min-width: 180px; }
     .filter-select option { background: #1a1a1e; }
-    .tabs { display: flex; gap: 4px; margin-bottom: 12px; overflow-x: auto; }
-    .tab { padding: 8px 12px; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.4); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; }
+    .tabs { display: flex; gap: 4px; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.06); overflow-x: auto; }
+    .tab { padding: 10px 14px; font-size: 12.5px; font-weight: 600; color: rgba(255,255,255,0.4); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; }
     .tab.active { color: #ff9d4d; border-bottom-color: #ff7a1a; }
-    .table-wrap { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; overflow: auto; }
-    table { width: 100%; border-collapse: collapse; min-width: 1200px; }
-    th { text-align: left; padding: 10px 12px; font-size: 10px; color: rgba(255,255,255,0.35); text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.06); }
-    td { padding: 12px; font-size: 12.5px; color: rgba(255,255,255,0.75); border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; }
+    .table-wrap { background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; overflow: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 980px; }
+    th { text-align: left; padding: 12px 14px; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.4px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    td { padding: 14px; font-size: 13px; color: rgba(255,255,255,0.75); border-bottom: 1px solid rgba(255,255,255,0.04); }
     .money { font-weight: 700; color: #ff9d4d; }
-    .mini-btn { padding: 5px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: rgba(255,255,255,0.65); margin: 2px; }
-    .mini-btn.confirm { border-color: rgba(0,220,130,0.3); color: #33dd99; }
-    .mini-btn.reject { border-color: rgba(255,70,70,0.3); color: #ff6666; }
-    .status-pill { padding: 3px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; display: inline-block; margin-top: 4px; }
+    .keep { font-weight: 600; color: #33dd99; }
+    .status-pill { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: capitalize; display: inline-block; }
     .pill-due { background: rgba(255,200,0,0.12); color: #ffcc44; }
     .pill-overdue { background: rgba(255,70,70,0.12); color: #ff6666; }
     .pill-vendor_claimed_paid, .pill-confirmed { background: rgba(0,150,255,0.12); color: #4499ff; }
     .pill-paid_confirmed { background: rgba(0,220,130,0.12); color: #33dd99; }
-    .empty { text-align: center; padding: 40px; color: #666; }
-    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 50; align-items: center; justify-content: center; }
-    .overlay.show { display: flex; }
-    .modal { background: #16161a; border-radius: 16px; padding: 24px; width: 440px; }
-    .form-group { margin-bottom: 12px; }
-    .form-group label { display: block; font-size: 12px; color: #888; margin-bottom: 6px; }
-    .form-group input, .form-group select { width: 100%; padding: 10px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; }
+    .pill-returned, .pill-voided { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.45); }
+    .mini-btn { padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: rgba(255,255,255,0.65); margin-right: 6px; margin-top: 4px; }
+    .mini-btn.confirm { border-color: rgba(0,220,130,0.3); color: #33dd99; }
+    .mini-btn.reject { border-color: rgba(255,70,70,0.3); color: #ff6666; }
+    .mini-btn.overdue { border-color: rgba(255,200,0,0.3); color: #ffcc44; }
+    .empty { text-align: center; padding: 50px 20px; color: rgba(255,255,255,0.3); font-size: 13px; }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
+    .modal-overlay.show { display: flex; }
+    .modal { background: #16161a; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 28px; width: 480px; max-width: 100%; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+    .modal-header h3 { font-size: 16px; font-weight: 700; }
+    .close-btn { width: 28px; height: 28px; border-radius: 8px; background: rgba(255,255,255,0.05); border: none; color: rgba(255,255,255,0.5); cursor: pointer; }
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.5); margin-bottom: 6px; }
+    .form-group input, .form-group select { width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; font-size: 13px; }
     .form-group select option { background: #1a1a1e; }
-    .calc-box { background: rgba(255,122,26,0.08); border-radius: 8px; padding: 10px; font-size: 12px; margin-bottom: 12px; }
-    .toast { position: fixed; bottom: 24px; right: 24px; padding: 12px 16px; background: #1e1e24; border-radius: 10px; display: none; font-size: 13px; }
+    .calc-box { background: rgba(255,122,26,0.08); border: 1px solid rgba(255,122,26,0.15); border-radius: 10px; padding: 12px 14px; font-size: 12.5px; color: rgba(255,255,255,0.65); margin-bottom: 14px; }
+    .submit-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, #ff7a1a, #ff9d4d); color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
+    .msg { display: none; padding: 10px 12px; border-radius: 8px; font-size: 12.5px; margin-bottom: 12px; }
+    .msg.err { display: block; background: rgba(255,70,70,0.1); color: #ff8080; }
+    .toast { position: fixed; bottom: 32px; right: 32px; padding: 12px 20px; background: #1e1e24; border-radius: 10px; font-size: 13px; z-index: 999; display: none; }
     .toast.show { display: block; color: #33dd99; }
   </style>
 </head>
@@ -103,59 +112,85 @@
     <div class="topbar">
       <div class="page-title">
         <h1>Orders & Commission</h1>
-        <p>Vendor cut, worker pay, delivery pay — after a product sells</p>
+        <p>Same table as before. Use the dropdowns to see vendor, worker, or delivery pay.</p>
       </div>
-      <button class="btn-primary" onclick="openAdd()">+ Add Order</button>
+      <button class="btn-primary" onclick="openAddModal()">+ Add Order</button>
     </div>
+
     <div class="stats-grid">
-      <div class="stat-card"><div class="stat-value" id="stat-total">—</div><div class="stat-label">Orders</div></div>
-      <div class="stat-card"><div class="stat-value" id="stat-vendor">—</div><div class="stat-label">Vendor commission pending</div></div>
-      <div class="stat-card"><div class="stat-value" id="stat-worker">—</div><div class="stat-label">Worker pay pending</div></div>
-      <div class="stat-card"><div class="stat-value" id="stat-delivery">—</div><div class="stat-label">Delivery pay pending</div></div>
+      <div class="stat-card"><div class="stat-value" id="stat-total">—</div><div class="stat-label">Total Orders</div></div>
+      <div class="stat-card"><div class="stat-value" id="stat-due">—</div><div class="stat-label">Due / Overdue</div></div>
+      <div class="stat-card"><div class="stat-value" id="stat-claimed">—</div><div class="stat-label">Awaiting Confirm</div></div>
+      <div class="stat-card"><div class="stat-value" id="stat-earned">—</div><div class="stat-label">Commission Confirmed</div></div>
+      <div class="stat-card"><div class="stat-value" id="stat-pending-rs">—</div><div class="stat-label">Commission Pending</div></div>
     </div>
-    <div class="info-box">Worker % comes from <b>Users → Set %</b> when you add the order. Delivery % is set when you assign a driver on the Delivery page. Old orders may show Rs. 0 — add a <b>new</b> order after Set %.</div>
+
+    <div class="info-box">
+      1) Choose <b>Vendor / Worker / Delivery</b> &nbsp; 2) Choose <b>their name</b>. Table columns stay the same as before.
+      Set each person’s % in <b>Users → Set %</b>.
+    </div>
+
     <div class="filters-row">
-      <input class="search-input" id="searchInput" placeholder="Search product or vendor..." oninput="renderOrders()">
-      <select class="filter-select" id="vendorFilter" onchange="renderOrders()"><option value="all">All Vendors</option></select>
+      <select class="filter-select" id="typeFilter" onchange="onTypeChange()">
+        <option value="vendor">Vendor</option>
+        <option value="worker">Worker</option>
+        <option value="delivery">Delivery</option>
+      </select>
+      <select class="filter-select" id="nameFilter" onchange="renderOrders()">
+        <option value="all">All names</option>
+      </select>
+      <input class="search-input" id="searchInput" placeholder="Search product..." oninput="renderOrders()">
     </div>
-    <div class="tabs">
-      <div class="tab active" onclick="filterStatus('all', this)">All</div>
-      <div class="tab" onclick="filterStatus('due', this)">Vendor due</div>
-      <div class="tab" onclick="filterStatus('vendor_claimed_paid', this)">Vendor claimed</div>
-      <div class="tab" onclick="filterStatus('paid_confirmed', this)">Vendor paid</div>
-      <div class="tab" onclick="filterStatus('staff', this)">Staff waiting pay</div>
-    </div>
+
+    <div class="tabs" id="statusTabs"></div>
+
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
-            <th>Product / Vendor</th>
-            <th>Sale</th>
-            <th>Vendor commission</th>
-            <th>Worker commission</th>
-            <th>Delivery commission</th>
+            <th>Product</th>
+            <th id="thPerson">Vendor</th>
+            <th>Selling</th>
+            <th>%</th>
+            <th>Admin Cut</th>
+            <th>Vendor Keeps</th>
+            <th>Payment</th>
+            <th>Order</th>
+            <th>Date</th>
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody id="ordersBody"><tr><td colspan="6" class="empty">Loading...</td></tr></tbody>
+        <tbody id="ordersBody"><tr><td colspan="10" class="empty">Loading...</td></tr></tbody>
       </table>
     </div>
   </div>
 
-  <div class="overlay" id="addModal">
+  <div class="toast" id="toast"></div>
+
+  <div class="modal-overlay" id="addModal">
     <div class="modal">
-      <h3 style="margin-bottom:14px;">Add Order</h3>
-      <div id="addMsg" style="display:none;padding:8px;border-radius:8px;margin-bottom:10px;font-size:12px;"></div>
-      <div class="form-group"><label>Vendor</label><select id="addVendor" onchange="onVendorChange()"></select></div>
-      <div class="form-group"><label>Product</label><select id="addProduct" onchange="onProductChange()"><option value="">Select vendor first</option></select></div>
-      <div class="form-group"><label>Selling price</label><input type="number" id="addPrice" oninput="recalc()"></div>
-      <div class="form-group"><label>Vendor commission %</label><input type="number" id="addPercent" oninput="recalc()"></div>
-      <div class="calc-box" id="calcBox">Vendor cut Rs. 0 · Worker pay is taken from that product’s worker Set %</div>
-      <button class="btn-primary" style="width:100%;" id="addBtn" onclick="submitOrder()">Create Order</button>
-      <button class="logout-btn" onclick="closeAdd()">Cancel</button>
+      <div class="modal-header">
+        <h3>Add Order</h3>
+        <button class="close-btn" onclick="closeAddModal()">✕</button>
+      </div>
+      <div class="msg" id="addMsg"></div>
+      <div class="form-group"><label>Vendor *</label><select id="addVendor" onchange="onVendorChange()"></select></div>
+      <div class="form-group"><label>Product *</label><select id="addProduct" onchange="onProductChange()"><option value="">Select vendor first</option></select></div>
+      <div class="form-group"><label>Selling Price (Rs.) *</label><input type="number" id="addPrice" min="0" step="0.01" oninput="recalc()"></div>
+      <div class="form-group"><label>Vendor commission % *</label><input type="number" id="addPercent" min="0" max="100" step="0.01" oninput="recalc()"></div>
+      <div class="form-group">
+        <label>Order status</label>
+        <select id="addOrderStatus">
+          <option value="pending">pending</option>
+          <option value="processing">processing</option>
+          <option value="shipped">shipped</option>
+          <option value="delivered">delivered</option>
+        </select>
+      </div>
+      <div class="calc-box" id="calcBox">Admin cut: <b>Rs. 0</b> | Vendor keeps: <b>Rs. 0</b></div>
+      <button class="submit-btn" id="addBtn" onclick="submitOrder()">Create Order (payment: due)</button>
     </div>
   </div>
-  <div class="toast" id="toast"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
@@ -163,14 +198,12 @@
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZhcXlzYmhicXdwbmRpbnl4enJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODczMjAzMzQsImV4cCI6MjEwMjg5NjMzNH0.mMoxhImEeg7BVDVgPogClkelxmAqlhi51BksrjAso7k';
     const { createClient } = supabase;
     const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    let allOrders = [], allVendors = [], vendorProducts = [], currentFilter = 'all';
+
+    let allOrders = [], allVendors = [], allWorkers = [], allDrivers = [];
+    let vendorProducts = [], currentPayFilter = 'all';
 
     function n(v) { return parseFloat(v) || 0; }
     function rs(v) { return 'Rs. ' + n(v).toLocaleString(); }
-    function pill(st) {
-      var c = st || 'due';
-      return '<span class="status-pill pill-' + c + '">' + String(c).replace(/_/g, ' ') + '</span>';
-    }
 
     async function checkAuth() {
       const { data: { session } } = await supabaseClient.auth.getSession();
@@ -179,20 +212,21 @@
       if (!profile || profile.role !== 'admin') { alert('Access denied.'); window.location.href = '../index.html'; return; }
       document.getElementById('userName').textContent = profile.full_name;
       document.getElementById('userAvatar').textContent = profile.full_name.charAt(0).toUpperCase();
-      await loadVendors();
+      await loadPeople();
       await loadOrders();
+      onTypeChange();
     }
 
-    async function loadVendors() {
-      const { data } = await supabaseClient.from('profiles').select('id, full_name, commission_percent').eq('role', 'vendor');
-      allVendors = data || [];
-      var vf = document.getElementById('vendorFilter');
+    async function loadPeople() {
+      const { data: vendors } = await supabaseClient.from('profiles').select('id, full_name, commission_percent').eq('role', 'vendor');
+      const { data: workers } = await supabaseClient.from('profiles').select('id, full_name, commission_percent').eq('role', 'worker');
+      const { data: drivers } = await supabaseClient.from('profiles').select('id, full_name, commission_percent').eq('role', 'delivery');
+      allVendors = vendors || [];
+      allWorkers = workers || [];
+      allDrivers = drivers || [];
       var av = document.getElementById('addVendor');
       av.innerHTML = '<option value="">Select vendor</option>';
-      allVendors.forEach(function (v) {
-        vf.appendChild(new Option(v.full_name, v.id));
-        av.appendChild(new Option(v.full_name, v.id));
-      });
+      allVendors.forEach(function (v) { av.appendChild(new Option(v.full_name, v.id)); });
     }
 
     async function loadOrders() {
@@ -200,63 +234,183 @@
         .from('orders')
         .select('*, products(title), vendor:vendor_id(full_name)')
         .order('created_at', { ascending: false });
-      if (error) { document.getElementById('ordersBody').innerHTML = '<tr><td colspan="6" class="empty">' + error.message + '</td></tr>'; return; }
+      if (error) {
+        document.getElementById('ordersBody').innerHTML = '<tr><td colspan="10" class="empty">' + error.message + '</td></tr>';
+        return;
+      }
       allOrders = data || [];
-      var vPend = allOrders.filter(function (o) { return o.payment_status === 'due' || o.payment_status === 'overdue' || o.payment_status === 'vendor_claimed_paid'; });
-      var wPend = allOrders.filter(function (o) { return o.worker_payout_status === 'due' || o.worker_payout_status === 'confirmed'; });
-      var dPend = allOrders.filter(function (o) { return o.delivery_payout_status === 'due' || o.delivery_payout_status === 'confirmed'; });
-      document.getElementById('stat-total').textContent = allOrders.length;
-      document.getElementById('stat-vendor').textContent = rs(vPend.reduce(function (s, o) { return s + n(o.commission_amount); }, 0));
-      document.getElementById('stat-worker').textContent = rs(wPend.reduce(function (s, o) { return s + n(o.worker_commission_amount); }, 0));
-      document.getElementById('stat-delivery').textContent = rs(dPend.reduce(function (s, o) { return s + n(o.delivery_commission_amount); }, 0));
       renderOrders();
     }
 
-    function filterStatus(st, el) {
-      currentFilter = st;
-      document.querySelectorAll('.tab').forEach(function (t) { t.classList.remove('active'); });
+    function viewType() { return document.getElementById('typeFilter').value; }
+
+    function onTypeChange() {
+      var type = viewType();
+      var names = type === 'worker' ? allWorkers : (type === 'delivery' ? allDrivers : allVendors);
+      var sel = document.getElementById('nameFilter');
+      sel.innerHTML = '<option value="all">All names</option>';
+      names.forEach(function (p) { sel.appendChild(new Option(p.full_name, p.id)); });
+      document.getElementById('thPerson').textContent = type === 'worker' ? 'Worker' : (type === 'delivery' ? 'Delivery' : 'Vendor');
+      currentPayFilter = 'all';
+      buildTabs();
+      renderOrders();
+    }
+
+    function payField() {
+      var t = viewType();
+      if (t === 'worker') return 'worker_payout_status';
+      if (t === 'delivery') return 'delivery_payout_status';
+      return 'payment_status';
+    }
+
+    function buildTabs() {
+      var t = viewType();
+      var html = '<div class="tab active" onclick="filterPay(\'all\', this)">All</div>';
+      if (t === 'vendor') {
+        html += '<div class="tab" onclick="filterPay(\'due\', this)">Due</div>';
+        html += '<div class="tab" onclick="filterPay(\'overdue\', this)">Overdue</div>';
+        html += '<div class="tab" onclick="filterPay(\'vendor_claimed_paid\', this)">Claimed</div>';
+        html += '<div class="tab" onclick="filterPay(\'paid_confirmed\', this)">Confirmed</div>';
+        html += '<div class="tab" onclick="filterPay(\'returned\', this)">Returned</div>';
+      } else {
+        html += '<div class="tab" onclick="filterPay(\'due\', this)">Due</div>';
+        html += '<div class="tab" onclick="filterPay(\'confirmed\', this)">Claimed</div>';
+        html += '<div class="tab" onclick="filterPay(\'paid_confirmed\', this)">Confirmed</div>';
+      }
+      document.getElementById('statusTabs').innerHTML = html;
+    }
+
+    function filterPay(st, el) {
+      currentPayFilter = st;
+      document.querySelectorAll('.tab').forEach(function (x) { x.classList.remove('active'); });
       el.classList.add('active');
       renderOrders();
     }
 
-    function renderOrders() {
-      var q = document.getElementById('searchInput').value.toLowerCase();
-      var vendorId = document.getElementById('vendorFilter').value;
-      var rows = allOrders;
-      if (currentFilter === 'staff') {
-        rows = rows.filter(function (o) { return o.worker_payout_status === 'confirmed' || o.delivery_payout_status === 'confirmed'; });
-      } else if (currentFilter !== 'all') {
-        rows = rows.filter(function (o) { return o.payment_status === currentFilter; });
+    function personName(o) {
+      var t = viewType();
+      if (t === 'worker') {
+        var w = allWorkers.find(function (x) { return x.id === o.worker_id; });
+        return w ? w.full_name : '—';
       }
-      if (vendorId !== 'all') rows = rows.filter(function (o) { return o.vendor_id === vendorId; });
-      if (q) rows = rows.filter(function (o) {
-        return ((o.products && o.products.title) || '').toLowerCase().indexOf(q) >= 0 || ((o.vendor && o.vendor.full_name) || '').toLowerCase().indexOf(q) >= 0;
-      });
+      if (t === 'delivery') {
+        var d = allDrivers.find(function (x) { return x.id === o.delivery_id; });
+        return d ? d.full_name : '—';
+      }
+      return (o.vendor && o.vendor.full_name) ? o.vendor.full_name : '—';
+    }
+
+    function rowMoney(o) {
+      var t = viewType();
+      if (t === 'worker') {
+        var pct = n(o.selling_price) ? (n(o.worker_commission_amount) / n(o.selling_price) * 100) : 0;
+        return { pct: pct, cut: n(o.worker_commission_amount), keep: n(o.selling_price) - n(o.worker_commission_amount), pay: o.worker_payout_status || 'due' };
+      }
+      if (t === 'delivery') {
+        var pct2 = n(o.selling_price) ? (n(o.delivery_commission_amount) / n(o.selling_price) * 100) : 0;
+        return { pct: pct2, cut: n(o.delivery_commission_amount), keep: n(o.selling_price) - n(o.delivery_commission_amount), pay: o.delivery_payout_status || 'due' };
+      }
+      return { pct: n(o.commission_percent), cut: n(o.commission_amount), keep: n(o.vendor_amount), pay: o.payment_status || 'due' };
+    }
+
+    function renderOrders() {
+      var type = viewType();
+      var nameId = document.getElementById('nameFilter').value;
+      var q = document.getElementById('searchInput').value.toLowerCase().trim();
+      var field = payField();
+      var rows = allOrders.slice();
+
+      if (type === 'worker') rows = rows.filter(function (o) { return !!o.worker_id; });
+      if (type === 'delivery') rows = rows.filter(function (o) { return !!o.delivery_id; });
+
+      if (nameId !== 'all') {
+        if (type === 'worker') rows = rows.filter(function (o) { return o.worker_id === nameId; });
+        else if (type === 'delivery') rows = rows.filter(function (o) { return o.delivery_id === nameId; });
+        else rows = rows.filter(function (o) { return o.vendor_id === nameId; });
+      }
+
+      if (currentPayFilter !== 'all') {
+        rows = rows.filter(function (o) {
+          var st = o[field] || (type === 'vendor' ? 'due' : 'due');
+          if (currentPayFilter === 'returned') return st === 'returned' || st === 'voided';
+          return st === currentPayFilter;
+        });
+      }
+
+      if (q) {
+        rows = rows.filter(function (o) {
+          return ((o.products && o.products.title) || '').toLowerCase().indexOf(q) >= 0 || personName(o).toLowerCase().indexOf(q) >= 0;
+        });
+      }
+
+      updateStats(type, nameId);
+
       var tbody = document.getElementById('ordersBody');
-      if (!rows.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty">No orders</td></tr>'; return; }
+      if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="10" class="empty">No orders for this filter</td></tr>';
+        return;
+      }
+
       tbody.innerHTML = rows.map(function (o) {
-        var st = o.payment_status || 'due';
+        var m = rowMoney(o);
+        var payClass = m.pay;
+        if (payClass === 'returned' || payClass === 'voided') payClass = 'returned';
         var actions = '';
-        if (st === 'vendor_claimed_paid') {
-          actions += '<button class="mini-btn confirm" onclick="setPayment(\'' + o.id + '\',\'paid_confirmed\')">Confirm vendor</button>';
-          actions += '<button class="mini-btn reject" onclick="setPayment(\'' + o.id + '\',\'due\')">Reject</button>';
-        } else if (st === 'due' || st === 'overdue') {
-          actions += '<button class="mini-btn confirm" onclick="setPayment(\'' + o.id + '\',\'paid_confirmed\')">Vendor paid</button>';
+        if (type === 'vendor') {
+          if (m.pay === 'vendor_claimed_paid') {
+            actions = '<button class="mini-btn confirm" onclick="setPayment(\'' + o.id + '\',\'paid_confirmed\')">Confirm</button>' +
+                      '<button class="mini-btn reject" onclick="setPayment(\'' + o.id + '\',\'due\')">Reject</button>';
+          } else if (m.pay === 'due') {
+            actions = '<button class="mini-btn confirm" onclick="setPayment(\'' + o.id + '\',\'paid_confirmed\')">Mark Paid</button>' +
+                      '<button class="mini-btn overdue" onclick="setPayment(\'' + o.id + '\',\'overdue\')">Overdue</button>';
+          } else if (m.pay === 'overdue') {
+            actions = '<button class="mini-btn confirm" onclick="setPayment(\'' + o.id + '\',\'paid_confirmed\')">Mark Paid</button>';
+          } else if (m.pay === 'paid_confirmed') {
+            actions = '<span style="font-size:12px;color:#33dd99;">✅ Confirmed</span>';
+          } else actions = '—';
+        } else if (type === 'worker') {
+          if (m.pay === 'confirmed') actions = '<button class="mini-btn confirm" onclick="setStaffPay(\'' + o.id + '\',\'worker_payout_status\')">Pay worker</button>';
+          else if (m.pay === 'paid_confirmed') actions = '<span style="font-size:12px;color:#33dd99;">✅ Paid</span>';
+          else actions = '<span style="font-size:12px;color:#888;">Waiting worker confirm</span>';
+        } else {
+          if (m.pay === 'confirmed') actions = '<button class="mini-btn confirm" onclick="setStaffPay(\'' + o.id + '\',\'delivery_payout_status\')">Pay delivery</button>';
+          else if (m.pay === 'paid_confirmed') actions = '<span style="font-size:12px;color:#33dd99;">✅ Paid</span>';
+          else actions = '<span style="font-size:12px;color:#888;">Waiting delivery confirm</span>';
         }
-        if (o.worker_payout_status === 'confirmed') {
-          actions += '<button class="mini-btn confirm" onclick="setStaffPay(\'' + o.id + '\',\'worker_payout_status\')">Pay worker</button>';
-        }
-        if (o.delivery_payout_status === 'confirmed') {
-          actions += '<button class="mini-btn confirm" onclick="setStaffPay(\'' + o.id + '\',\'delivery_payout_status\')">Pay delivery</button>';
-        }
+
         return '<tr>' +
-          '<td><b>' + ((o.products && o.products.title) || '—') + '</b><br><span style="color:#888;font-size:11px;">' + ((o.vendor && o.vendor.full_name) || '—') + '</span></td>' +
+          '<td>' + ((o.products && o.products.title) || '—') + '</td>' +
+          '<td>' + personName(o) + '</td>' +
           '<td>' + rs(o.selling_price) + '</td>' +
-          '<td class="money">' + rs(o.commission_amount) + ' (' + n(o.commission_percent) + '%)' + pill(st) + '</td>' +
-          '<td class="money">' + rs(o.worker_commission_amount) + pill(o.worker_payout_status || 'due') + '</td>' +
-          '<td class="money">' + rs(o.delivery_commission_amount) + pill(o.delivery_payout_status || 'due') + '</td>' +
-          '<td>' + (actions || '—') + '</td></tr>';
+          '<td>' + (Math.round(m.pct * 100) / 100) + '%</td>' +
+          '<td class="money">' + rs(m.cut) + '</td>' +
+          '<td class="keep">' + rs(m.keep) + '</td>' +
+          '<td><span class="status-pill pill-' + payClass + '">' + String(m.pay).replace(/_/g, ' ') + '</span></td>' +
+          '<td>' + (o.order_status || '—') + '</td>' +
+          '<td style="color:rgba(255,255,255,0.35);font-size:12px;">' + (o.created_at ? new Date(o.created_at).toLocaleDateString() : '—') + '</td>' +
+          '<td>' + actions + '</td></tr>';
       }).join('');
+    }
+
+    function updateStats(type, nameId) {
+      var rows = allOrders.slice();
+      if (type === 'worker') rows = rows.filter(function (o) { return !!o.worker_id; });
+      if (type === 'delivery') rows = rows.filter(function (o) { return !!o.delivery_id; });
+      if (nameId !== 'all') {
+        if (type === 'worker') rows = rows.filter(function (o) { return o.worker_id === nameId; });
+        else if (type === 'delivery') rows = rows.filter(function (o) { return o.delivery_id === nameId; });
+        else rows = rows.filter(function (o) { return o.vendor_id === nameId; });
+      }
+      function payOf(o) { return rowMoney(o).pay; }
+      function cutOf(o) { return rowMoney(o).cut; }
+      var due = rows.filter(function (o) { var p = payOf(o); return p === 'due' || p === 'overdue'; });
+      var claimed = rows.filter(function (o) { var p = payOf(o); return p === 'vendor_claimed_paid' || p === 'confirmed'; });
+      var paid = rows.filter(function (o) { return payOf(o) === 'paid_confirmed'; });
+      document.getElementById('stat-total').textContent = rows.length;
+      document.getElementById('stat-due').textContent = due.length;
+      document.getElementById('stat-claimed').textContent = claimed.length;
+      document.getElementById('stat-earned').textContent = rs(paid.reduce(function (s, o) { return s + cutOf(o); }, 0));
+      document.getElementById('stat-pending-rs').textContent = rs(due.concat(claimed).reduce(function (s, o) { return s + cutOf(o); }, 0));
     }
 
     async function setPayment(id, status) {
@@ -264,17 +418,17 @@
       if (status === 'paid_confirmed') extra.vendor_confirmed = true;
       if (status === 'due') extra.vendor_confirmed = false;
       var { error } = await supabaseClient.from('orders').update(extra).eq('id', id);
-      if (error) toast(error.message); else { toast('Updated'); await loadOrders(); }
+      if (error) showToast(error.message); else { showToast('Updated'); await loadOrders(); }
     }
     async function setStaffPay(id, col) {
       var patch = {};
       patch[col] = 'paid_confirmed';
       var { error } = await supabaseClient.from('orders').update(patch).eq('id', id);
-      if (error) toast(error.message); else { toast('Staff marked paid'); await loadOrders(); }
+      if (error) showToast(error.message); else { showToast('Marked paid'); await loadOrders(); }
     }
 
-    function openAdd() { document.getElementById('addMsg').style.display = 'none'; document.getElementById('addModal').classList.add('show'); }
-    function closeAdd() { document.getElementById('addModal').classList.remove('show'); }
+    function openAddModal() { document.getElementById('addMsg').className = 'msg'; document.getElementById('addModal').classList.add('show'); }
+    function closeAddModal() { document.getElementById('addModal').classList.remove('show'); }
 
     async function onVendorChange() {
       var vendorId = document.getElementById('addVendor').value;
@@ -298,7 +452,8 @@
     function recalc() {
       var price = n(document.getElementById('addPrice').value);
       var pct = n(document.getElementById('addPercent').value);
-      document.getElementById('calcBox').innerHTML = 'Vendor cut <b>' + rs(price * pct / 100) + '</b>. Worker pay is calculated from that product’s worker (Users → Set %).';
+      var cut = +(price * pct / 100).toFixed(2);
+      document.getElementById('calcBox').innerHTML = 'Admin cut: <b>' + rs(cut) + '</b> | Vendor keeps: <b>' + rs(price - cut) + '</b>';
     }
 
     async function submitOrder() {
@@ -307,8 +462,9 @@
       var product_id = document.getElementById('addProduct').value;
       var selling_price = n(document.getElementById('addPrice').value);
       var commission_percent = n(document.getElementById('addPercent').value);
+      var order_status = document.getElementById('addOrderStatus').value;
       if (!vendor_id || !product_id || selling_price <= 0) {
-        msg.style.display = 'block'; msg.style.color = '#ff8080'; msg.textContent = 'Vendor, product and price required.'; return;
+        msg.className = 'msg err'; msg.textContent = 'Vendor, product and price are required.'; return;
       }
       var commission_amount = +(selling_price * commission_percent / 100).toFixed(2);
       var vendor_amount = +(selling_price - commission_amount).toFixed(2);
@@ -323,20 +479,21 @@
       const { error } = await supabaseClient.from('orders').insert({
         vendor_id: vendor_id, product_id: product_id, selling_price: selling_price,
         commission_percent: commission_percent, commission_amount: commission_amount, vendor_amount: vendor_amount,
-        payment_status: 'due', vendor_confirmed: false, order_status: 'pending',
+        payment_status: 'due', vendor_confirmed: false, order_status: order_status,
         worker_id: worker_id, worker_commission_amount: worker_commission_amount,
         worker_payout_status: worker_id ? 'due' : null
       });
       document.getElementById('addBtn').disabled = false;
-      if (error) { msg.style.display = 'block'; msg.style.color = '#ff8080'; msg.textContent = error.message; return; }
-      closeAdd(); toast('Order created'); await loadOrders();
+      if (error) { msg.className = 'msg err'; msg.textContent = error.message; return; }
+      closeAddModal(); showToast('Order created'); await loadOrders();
     }
 
-    function toast(m) {
+    function showToast(m) {
       var t = document.getElementById('toast'); t.textContent = m; t.className = 'toast show';
       setTimeout(function () { t.className = 'toast'; }, 2500);
     }
     async function handleLogout() { await supabaseClient.auth.signOut(); window.location.href = '../index.html'; }
+    document.getElementById('addModal').addEventListener('click', function (e) { if (e.target === this) closeAddModal(); });
     checkAuth();
   </script>
 </body>
